@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import styles from './Post.module.css';
 
 const Post = ({ post, setPosts }) => {
   const { _id, postedAt, body, user: foodieUser } = post;
@@ -73,40 +74,47 @@ const Post = ({ post, setPosts }) => {
   return (
     <>
       {!deleted && (
-        <>
+        <div className={styles.post}>
           <div>
-            <form onSubmit={handleSubmit((value) => onUpdatePost(value))}>
-              <textarea
-                required
-                data-autofocus
-                placeholder='Edit your post.'
-                variant='filled'
-                {...register('editPost')}
-              />
-              <button type='submit' disabled={inputDisabled}>
-                Update
-              </button>
-            </form>
-
+            <img
+              src={foodieUser.picture}
+              alt={foodieUser.name}
+              className={styles.picture}
+            />
             <div>
-              <img src={foodieUser.picture} alt={foodieUser.name} />
-              <div>
-                <p>{foodieUser.nickname}</p>
-                <p>{new Date(postedAt).toLocaleString()}</p>
-              </div>
-            </div>
-            <p>{body}</p>
-            <div>
-              <div>
-                <p>0 people liked this</p>
-                <div>
-                  <button onClick={() => editPost()}>Edit</button>
-                  <button onClick={() => deletePost()}>Delete</button>
-                </div>
-              </div>
+              <p>{foodieUser.nickname}</p>
+              <p>{new Date(postedAt).toLocaleString()}</p>
             </div>
           </div>
-        </>
+          <p>{body}</p>
+          <div>
+            <div>
+              <p>0 people liked this</p>
+
+              <div class='overlay hidden'></div>
+              <button class='btn btn-open'>Open Modal</button>
+
+              <form onSubmit={handleSubmit((value) => onUpdatePost(value))}>
+                <textarea
+                  required
+                  data-autofocus
+                  placeholder='Edit your post.'
+                  variant='filled'
+                  {...register('editPost')}
+                />
+                <button type='submit' disabled={inputDisabled}>
+                  Update
+                </button>
+              </form>
+
+              <section class='modal hidden'>
+                {' '}
+                <button onClick={() => editPost()}>Edit</button>
+                <button onClick={() => deletePost()}>Delete</button>
+              </section>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

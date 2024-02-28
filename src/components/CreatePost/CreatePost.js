@@ -5,7 +5,8 @@ const demoUser = {
   id: '6276d0c602ce122f7b8b11ec',
   name: 'Emil Schultz',
   nickname: 'Totti',
-  picture: 'https://picsum.photos/id/237',
+  picture:
+    'https://upload.wikimedia.org/wikipedia/commons/4/42/KL-2018_%284%29.jpg',
 };
 
 const CreatePost = ({ setPosts }) => {
