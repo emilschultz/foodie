@@ -90,28 +90,25 @@ const Post = ({ post, setPosts }) => {
           <div>
             <div>
               <p>0 people liked this</p>
-
-              <div class='overlay hidden'></div>
-              <button class='btn btn-open'>Open Modal</button>
-
-              <form onSubmit={handleSubmit((value) => onUpdatePost(value))}>
-                <textarea
-                  required
-                  data-autofocus
-                  placeholder='Edit your post.'
-                  variant='filled'
-                  {...register('editPost')}
-                />
-                <button type='submit' disabled={inputDisabled}>
-                  Update
-                </button>
-              </form>
-
-              <section class='modal hidden'>
-                {' '}
+              {modalOpened && (
+                <form onSubmit={handleSubmit((value) => onUpdatePost(value))}>
+                  <textarea
+                    required
+                    data-autofocus
+                    placeholder='Edit your post.'
+                    variant='filled'
+                    {...register('editPost')}
+                  />
+                  <button type='submit' disabled={inputDisabled}>
+                    Update
+                  </button>
+                  <button onClick={() => setModalOpened(false)}>Close</button>
+                </form>
+              )}
+              <div>
                 <button onClick={() => editPost()}>Edit</button>
                 <button onClick={() => deletePost()}>Delete</button>
-              </section>
+              </div>
             </div>
           </div>
         </div>
