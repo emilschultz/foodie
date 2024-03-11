@@ -1,0 +1,21 @@
+.navbar {
+  background-color: #242215;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 90%;
+  border-radius: 15pt;
+  margin: 1rem;
+  min-height: 3.125rem;
+  color: aliceblue;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
+.ul {
+  width: 100%;
+  display: flex;
+  list-style-type: none;
+  justify-content: space-around;
+}
