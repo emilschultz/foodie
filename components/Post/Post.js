@@ -5,9 +5,11 @@ import { useUser } from '../../context/UserContext.js';
 import styles from './Post.module.css';
 
 const Post = ({ post, setPosts }) => {
-  const { _id, postedAt, body, user: foodieUser } = post;
+  const { _id, postedAt, body, user: foodieUser, likes } = post;
   const user = useUser();
   const [deleted, setDeleted] = useState(false);
+  const [updatingLike, setUpdatingLike] = useState(false);
+  const [likesState, setLikesState] = useState(likes);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
 
@@ -57,6 +59,31 @@ const Post = ({ post, setPosts }) => {
     alert('Your post has been updated');
   };
 
+  const likePost = async () => {
+    setUpdatingLike(true);
+    let action = likesState.includes(user.id) ? '$pull' : '$addToSet';
+
+    await fetch('/api/post/like', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _id,
+        userId: user.id,
+        action,
+      }),
+    });
+
+    setLikesState((likes) => {
+      if (likesState.includes(user.id)) {
+        return likes.filter((like) => like !== user.id);
+      }
+      return [...likes, user.id];
+    });
+    setUpdatingLike(false);
+  };
+
   const deletePost = async () => {
     const response = await fetch(`/api/post/`, {
       method: 'DELETE',
@@ -91,7 +118,10 @@ const Post = ({ post, setPosts }) => {
           <p>{body}</p>
           <div>
             <div>
-              <p>0 people liked this</p>
+              <p>
+                {likesState ? likesState.length : 0}
+                {` ${likesState.length === 1 ? 'person' : 'people'} liked this`}
+              </p>
               {modalOpened && (
                 <form onSubmit={handleSubmit((value) => onUpdatePost(value))}>
                   <textarea
@@ -113,6 +143,7 @@ const Post = ({ post, setPosts }) => {
                   <button onClick={() => deletePost()}>Delete</button>
                 </div>
               )}
+              <button onClick={() => likePost()}>Like</button>
             </div>
           </div>
         </div>
