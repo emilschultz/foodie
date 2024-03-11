@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useUser } from '../../context/UserContext.js';
 import styles from './Post.module.css';
 
 const Post = ({ post, setPosts }) => {
   const { _id, postedAt, body, user: foodieUser } = post;
+  const user = useUser();
   const [deleted, setDeleted] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
@@ -105,10 +107,12 @@ const Post = ({ post, setPosts }) => {
                   <button onClick={() => setModalOpened(false)}>Close</button>
                 </form>
               )}
-              <div>
-                <button onClick={() => editPost()}>Edit</button>
-                <button onClick={() => deletePost()}>Delete</button>
-              </div>
+              {user.id === foodieUser.id && (
+                <div>
+                  <button onClick={() => editPost()}>Edit</button>
+                  <button onClick={() => deletePost()}>Delete</button>
+                </div>
+              )}
             </div>
           </div>
         </div>

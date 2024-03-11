@@ -1,10 +1,14 @@
-export default async function handler(req, res) {
+import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
+
+export default withApiAuthRequired(async function handler(req, res) {
+  const { accessToken } = await getAccessToken(req, res);
+
   const fetchOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Request-Headers': '*',
-      'api-key': process.env.MONGODB_DATA_API_KEY,
+      jwtTokenString: accessToken,
     },
   };
   const fetchBody = {
@@ -12,6 +16,7 @@ export default async function handler(req, res) {
     database: 'foodie',
     collection: 'posts',
   };
+  // const baseUrl = `https://data.mongodb-api.com/app/${process.env.AUTH0_AUDIENCE}/endpoint/data/beta/action`;
   const baseUrl = `${process.env.MONGODB_DATA_API_URL}/action`;
 
   try {
@@ -74,4 +79,4 @@ export default async function handler(req, res) {
     console.error(error);
     res.status(500).json({ error });
   }
-}
+});
