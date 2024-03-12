@@ -3,11 +3,10 @@
 import { useState, useEffect } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useSetUser } from '../context/UserContext.js';
-// import { UserProvider } from '@auth0/nextjs-auth0/client';
-// import { UserProvider as AtlasUserProvider } from '../context/UserContext.js';
 import styles from './page.module.css';
-import CreatePost from '../components/CreatePost/CreatePost.js';
+// import CreatePost from '../components/CreatePost/CreatePost.js';
 import Posts from '../components/Posts/Posts.js';
+import Navbar from '../components/Navbar/Navbar.js';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,11 +28,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.main}>
+    <section className={styles.main}>
       <div className={styles.description}>foodie</div>
-      <CreatePost setPosts={setPosts} />
+      {/* <CreatePost setPosts={setPosts} /> */}
       <Posts posts={posts} setPosts={setPosts} />
-    </main>
+      <Navbar setPosts={setPosts} />
+    </section>
   );
 }
 

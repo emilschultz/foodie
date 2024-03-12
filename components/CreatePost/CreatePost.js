@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useUser } from '../../context/UserContext.js';
+import { useRouter } from 'next/router';
 
-const CreatePost = ({ setPosts }) => {
-  const user = useUser();
+// import { useUser } from '../../context/UserContext.js';
+
+const CreatePost = ({ user, setPosts }) => {
+  // const user = useUser();
+  const router = useRouter();
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       post: '',
@@ -43,6 +47,7 @@ const CreatePost = ({ setPosts }) => {
     reset();
     setInputDisabled(false);
     alert('successfully postet a post');
+    router.push('/');
   };
 
   return (

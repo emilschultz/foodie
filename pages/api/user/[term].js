@@ -38,7 +38,7 @@ export default withApiAuthRequired(async function handler(req, res) {
                   },
                 },
               },
-              { $sort: { nickname: -1 } },
+              //   { $sort: { nickname: -1 } },
             ],
           }),
         });
