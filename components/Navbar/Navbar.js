@@ -6,27 +6,8 @@ import {
   AiOutlineHome,
   AiOutlineUser,
 } from 'react-icons/ai';
-import { useState } from 'react';
 
 const Navbar = ({ setPosts }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [modalOpened, setModalOpened] = useState(false);
-
-  const openSearch = () => {
-    setModalOpened(true);
-  };
-
-  const handleSearch = async (e) => {
-    const term = e.currentTarget.value;
-    setSearchTerm(e.currentTarget.value);
-
-    if (term.length > 2 || term.length === 0) {
-      const getUsers = await fetch(`/api/user/${term}`);
-      const getUsersJson = await getUsers.json();
-      console.log('JSON:', getUsersJson);
-      setPosts(getUsersJson);
-    }
-  };
   return (
     <nav className={styles.navbar}>
       <ul className={styles.ul}>
@@ -46,7 +27,7 @@ const Navbar = ({ setPosts }) => {
           </Link>
         </li>
         <li>
-          <Link href='/proile'>
+          <Link href='/profile'>
             <AiOutlineUser />
           </Link>
         </li>
