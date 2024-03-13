@@ -7,7 +7,7 @@ import {
   AiOutlineUser,
 } from 'react-icons/ai';
 
-const Navbar = ({ setPosts }) => {
+const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <ul className={styles.ul}>

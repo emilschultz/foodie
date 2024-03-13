@@ -6,8 +6,6 @@ import styles from './page.module.css';
 import './globals.css';
 
 export default function App({ Component, pageProps }) {
-  console.log('coimponent', Component);
-  console.log('props:', pageProps);
   return (
     <>
       <Head>
