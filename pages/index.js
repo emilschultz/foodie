@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useSetUser } from '../context/UserContext.js';
 import styles from './page.module.css';
-// import CreatePost from '../components/CreatePost/CreatePost.js';
 import Posts from '../components/Posts/Posts.js';
 import Navbar from '../components/Navbar/Navbar.js';
 
@@ -30,7 +29,6 @@ export default function Home() {
   return (
     <section className={styles.main}>
       <div className={styles.description}>foodie</div>
-      {/* <CreatePost setPosts={setPosts} /> */}
       <Posts posts={posts} setPosts={setPosts} />
       <Navbar setPosts={setPosts} />
     </section>
