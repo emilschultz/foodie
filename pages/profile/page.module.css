@@ -1,0 +1,13 @@
+.signout {
+  background-color: #242215;
+  color: #f0f8ff;
+  padding: 12px;
+  border-radius: 12pt;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.posts {
+  width: 50%;
+}

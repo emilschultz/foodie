@@ -1,6 +1,9 @@
+import Link from 'next/link';
 import Navbar from '../../components/Navbar/Navbar';
-import Posts from '../../components/Posts/Posts';
+import ProfilePosts from '../../components/profilePosts/ProfilePosts';
+import { AiOutlineLogout } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
+import styles from './page.module.css';
 
 const Profile = () => {
   const [user, setUser] = useState('');
@@ -34,7 +37,15 @@ const Profile = () => {
         <h1>{user.nickname}</h1>
         <img src={user.picture} />
       </div>
-      <Posts posts={userPosts} setPosts={setUserPosts} />
+      <Link href='/api/auth/logout' className={styles.signout}>
+        Sign out
+        <AiOutlineLogout />
+      </Link>
+      {userPosts.length > 0 ? (
+        <ProfilePosts posts={userPosts} setPosts={setUserPosts} />
+      ) : (
+        <p> You have </p>
+      )}
       <Navbar />
     </>
   );
