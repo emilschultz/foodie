@@ -8,11 +8,13 @@ const Create = ({ setPosts }) => {
   const [newPost, setNewPost] = useState('');
   const user = useUser();
   return (
-    <div>
-      <h1>Create a New Post</h1>
-      <CreatePost user={user} setPosts={setNewPost} />
+    <>
+      <div>
+        <h1>Create a New Post</h1>
+        <CreatePost user={user} setPosts={setNewPost} />
+      </div>
       <Navbar setPosts={setPosts} />
-    </div>
+    </>
   );
 };
 
