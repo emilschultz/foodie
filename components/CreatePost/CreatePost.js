@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import styles from './CreatePost.module.css';
 
 // import { useUser } from '../../context/UserContext.js';
 
@@ -14,12 +15,17 @@ const CreatePost = ({ user, setPosts }) => {
     },
   });
   const [inputDisabled, setInputDisabled] = useState(false);
+  const [tags, setTags] = useState([]);
+  console.log(tags);
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
     const post = {
       postedAt: Date.now(),
+      title: value.title,
       body: value.post,
+      servings: value.servings,
+      tags: tags,
       likes: [],
       user: {
         id: user.id,
@@ -46,14 +52,64 @@ const CreatePost = ({ user, setPosts }) => {
     ]);
     reset();
     setInputDisabled(false);
-    alert('successfully postet a post');
+    alert('successfully postet a recipe');
     router.push('/');
   };
 
+  const handleAddTag = (e) => {
+    e.preventDefault();
+    const tagInput = e.target.previousSibling.value;
+    if (tagInput.trim() !== '') {
+      setTags([...tags, tagInput.trim()]);
+      e.target.previousSibling.value = '';
+    }
+  };
+
+  function removeTag(index) {
+    setTags(tags.filter((el, i) => i !== index));
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmitPost)}>
-      <input {...register('post')} />{' '}
-      <button type='submit' disabled={inputDisabled}>
+    <form onSubmit={handleSubmit(onSubmitPost)} className={styles.form}>
+      {/* FILE */}
+      <label htmlFor='video'>File</label>
+      <input type='file' accept='video/*' />
+
+      {/* TITLE */}
+      <label htmlFor='title'>Title</label>
+      <input {...register('title')} className={[styles.title, styles.input]} />
+
+      {/* DESCRIPTION */}
+      <label htmlFor='description'>Description</label>
+      <textarea {...register('post')} id='description' />
+
+      {/* TAGS */}
+      <div className='tags-input-container'>
+        {tags.map((tag, index) => (
+          <div className='tag-item' key={index}>
+            <span className='text'>{tag}</span>
+            <button onClick={() => removeTag(index)}>Remove</button>
+          </div>
+        ))}
+      </div>
+
+      <label htmlFor='tags'>Tags</label>
+      <input {...register('tags')} />
+      <button onClick={handleAddTag}>Add Tag</button>
+
+      {/* SERVINGS */}
+      <label htmlFor='servings'>Servings</label>
+      <input
+        className={[styles.servings, styles.input]}
+        {...register('servings')}
+        id='servings'
+        placeholder='How many people does this recipe serve?'
+        type='number'
+        min={1}
+        max={100}
+      />
+
+      <button type='submit' disabled={inputDisabled} className={styles.submit}>
         Submit
       </button>
     </form>
