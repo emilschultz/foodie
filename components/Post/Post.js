@@ -5,7 +5,7 @@ import { useUser } from '../../context/UserContext.js';
 import styles from './Post.module.css';
 
 const Post = ({ post, setPosts }) => {
-  const { _id, postedAt, body, user: foodieUser, likes } = post;
+  const { _id, postedAt, body, user: foodieUser, likes, title } = post;
   const user = useUser();
   const [deleted, setDeleted] = useState(false);
   const [updatingLike, setUpdatingLike] = useState(false);
@@ -115,6 +115,7 @@ const Post = ({ post, setPosts }) => {
               <p>{new Date(postedAt).toLocaleString()}</p>
             </div>
           </div>
+          <h1>{title}</h1>
           <p>{body}</p>
           <div>
             <div>
@@ -144,6 +145,7 @@ const Post = ({ post, setPosts }) => {
                 </div>
               )}
               <button onClick={() => likePost()}>Like</button>
+              <button onClick={() => followUser()}>Follow</button>
             </div>
           </div>
         </div>
