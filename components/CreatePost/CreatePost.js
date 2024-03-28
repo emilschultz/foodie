@@ -17,6 +17,8 @@ const CreatePost = ({ user, setPosts }) => {
   const [inputDisabled, setInputDisabled] = useState(false);
   const [tags, setTags] = useState([]);
   const [servings, setServings] = useState(1);
+  const [difficulty, setDifficulty] = useState('');
+  const [ingredients, setIngredients] = useState([]);
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
@@ -24,8 +26,12 @@ const CreatePost = ({ user, setPosts }) => {
       postedAt: Date.now(),
       title: value.title,
       body: value.post,
-      servings: servings,
       tags: tags,
+      servings: servings,
+      preptime: value.preptime,
+      cookingtime: value.cooktime,
+      difficulty: value.difficulty,
+      ingredients: ingredients,
       likes: [],
       user: {
         id: user.id,
@@ -79,6 +85,20 @@ const CreatePost = ({ user, setPosts }) => {
     setServings((servings) => servings - 1);
   };
 
+  // INGREDIENST FUNCTIONS
+
+  const handleAddIngredient = (e) => {
+    e.preventDefault();
+    const ingredientsInput = e.target.previousSibling.value;
+    if (ingredientsInput.trim() !== '') {
+      setIngredients([...ingredients, ingredientsInput.trim()]);
+      e.target.previousSibling.value = '';
+    }
+  };
+
+  const removeIngredient = (index) => {
+    setIngredients(ingredients.filter((el, i) => i !== index));
+  };
   return (
     <form onSubmit={handleSubmit(onSubmitPost)} className={styles.form}>
       {/* FILE */}
@@ -107,7 +127,7 @@ const CreatePost = ({ user, setPosts }) => {
 
       <label htmlFor='tags'>Tags</label>
       <input {...register('tags')} className={styles.tagInput} />
-      <button onClick={handleAddTag}>Add Tag</button>
+      <button onClick={handleAddTag}>Add</button>
 
       {/* SERVINGS */}
       <p>Servings</p>
@@ -131,6 +151,66 @@ const CreatePost = ({ user, setPosts }) => {
           </span>
         </div>
       </div>
+
+      {/* PREP/COOK TIME */}
+      <label htmlFor='preptime'>Prep</label>
+      <input
+        {...register('preptime')}
+        id='preptime'
+        className={styles.input}
+        placeholder='Preperation time in minutes'
+        type='number'
+        step={5}
+      />
+
+      <label htmlFor='cookingtime'>Cook</label>
+      <input
+        {...register('cooktime')}
+        id='cookingtime'
+        className={styles.input}
+        placeholder='Cooking time in minutes'
+        type='number'
+        step={5}
+      />
+
+      {/* DIFFICULTY */}
+      <label htmlFor='difficulty'>Difficulty</label>
+      <select
+        {...register('difficulty')}
+        className={styles.input}
+        id='difficulty'
+        onChange={(e) => setDifficulty(e.target.value)}
+        value={difficulty}
+      >
+        <option value='easy'>Easy</option>
+        <option value='medium'>Medium</option>
+        <option value='hard'>Hard</option>
+      </select>
+
+      {/* INGREDIENTS */}
+      <div className={styles.inputContainer}>
+        {ingredients.map((ingredient, index) => (
+          <div className={styles.tag} key={index}>
+            <span>{ingredient}</span>
+            <span
+              className={styles.close}
+              onClick={() => removeIngredient(index)}
+            >
+              &times;
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <label htmlFor='ingredients'>Ingredients</label>
+      <input
+        {...register('ingredients')}
+        id='ingredients'
+        className={styles.tagInput}
+      />
+      <button onClick={handleAddIngredient}>Add</button>
+
+      {/* SUBMIT FORM */}
       <button type='submit' disabled={inputDisabled} className={styles.submit}>
         Submit
       </button>
