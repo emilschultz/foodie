@@ -65,9 +65,9 @@ const CreatePost = ({ user, setPosts }) => {
     }
   };
 
-  function removeTag(index) {
+  const removeTag = (index) => {
     setTags(tags.filter((el, i) => i !== index));
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmitPost)} className={styles.form}>
@@ -84,17 +84,19 @@ const CreatePost = ({ user, setPosts }) => {
       <textarea {...register('post')} id='description' />
 
       {/* TAGS */}
-      <div className='tags-input-container'>
+      <div className={styles.inputContainer}>
         {tags.map((tag, index) => (
-          <div className='tag-item' key={index}>
-            <span className='text'>{tag}</span>
-            <button onClick={() => removeTag(index)}>Remove</button>
+          <div className={styles.tag} key={index}>
+            <span>{tag}</span>
+            <span className={styles.close} onClick={() => removeTag(index)}>
+              &times;
+            </span>
           </div>
         ))}
       </div>
 
       <label htmlFor='tags'>Tags</label>
-      <input {...register('tags')} />
+      <input {...register('tags')} className={styles.tagInput} />
       <button onClick={handleAddTag}>Add Tag</button>
 
       {/* SERVINGS */}
