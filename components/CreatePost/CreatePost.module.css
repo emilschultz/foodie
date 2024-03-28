@@ -49,3 +49,25 @@
   border: none;
   outline: none;
 }
+
+.servingsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.counterContainer {
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 0.5rem;
+}
+
+.counter {
+  width: 20px;
+  background-color: transparent;
+  color: rgb(16, 0, 54);
+  border: 1px solid rgb(16, 0, 54);
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  text-align: center;
+}

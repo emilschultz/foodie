@@ -16,7 +16,7 @@ const CreatePost = ({ user, setPosts }) => {
   });
   const [inputDisabled, setInputDisabled] = useState(false);
   const [tags, setTags] = useState([]);
-  console.log(tags);
+  const [servings, setServings] = useState(1);
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
@@ -24,7 +24,7 @@ const CreatePost = ({ user, setPosts }) => {
       postedAt: Date.now(),
       title: value.title,
       body: value.post,
-      servings: value.servings,
+      servings: servings,
       tags: tags,
       likes: [],
       user: {
@@ -56,6 +56,7 @@ const CreatePost = ({ user, setPosts }) => {
     router.push('/');
   };
 
+  // TAGS FUNCTIONS
   const handleAddTag = (e) => {
     e.preventDefault();
     const tagInput = e.target.previousSibling.value;
@@ -67,6 +68,15 @@ const CreatePost = ({ user, setPosts }) => {
 
   const removeTag = (index) => {
     setTags(tags.filter((el, i) => i !== index));
+  };
+
+  // SERVINGS FUNCTIONS
+  const increase = () => {
+    setServings((servings) => servings + 1);
+  };
+
+  const decrease = () => {
+    setServings((servings) => servings - 1);
   };
 
   return (
@@ -100,17 +110,27 @@ const CreatePost = ({ user, setPosts }) => {
       <button onClick={handleAddTag}>Add Tag</button>
 
       {/* SERVINGS */}
-      <label htmlFor='servings'>Servings</label>
-      <input
-        className={[styles.servings, styles.input]}
-        {...register('servings')}
-        id='servings'
-        placeholder='How many people does this recipe serve?'
-        type='number'
-        min={1}
-        max={100}
-      />
-
+      <p>Servings</p>
+      <div className={styles.servingsContainer}>
+        {/* <label htmlFor='servings'>Servings</label> */}
+        {/* <input
+          className={[styles.servings, styles.input]}
+          id='servings'
+          placeholder={servings}
+          type='number'
+          min={1}
+          max={100}
+        /> */}
+        <p>{servings}</p>
+        <div className={styles.counterContainer}>
+          <span className={styles.counter} onClick={increase}>
+            +
+          </span>
+          <span className={styles.counter} onClick={decrease}>
+            -
+          </span>
+        </div>
+      </div>
       <button type='submit' disabled={inputDisabled} className={styles.submit}>
         Submit
       </button>
