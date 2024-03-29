@@ -85,7 +85,7 @@ const CreatePost = ({ user, setPosts }) => {
     setServings((servings) => servings - 1);
   };
 
-  // INGREDIENST FUNCTIONS
+  // INGREDIENTS FUNCTIONS
 
   const handleAddIngredient = (e) => {
     e.preventDefault();
