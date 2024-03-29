@@ -17,6 +17,7 @@ const CreatePost = ({ user, setPosts }) => {
   const [difficulty, setDifficulty] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
+  const [tips, setTips] = useState([]);
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
@@ -31,6 +32,7 @@ const CreatePost = ({ user, setPosts }) => {
       difficulty: value.difficulty,
       ingredients: ingredients,
       steps: steps,
+      tips: tips,
       likes: [],
       user: {
         id: user.id,
@@ -101,6 +103,16 @@ const CreatePost = ({ user, setPosts }) => {
     const stepsInput = e.target.previousSibling.value;
     if (stepsInput.trim() !== '') {
       setSteps([...steps, stepsInput.trim()]);
+      e.target.previousSibling.value = '';
+    }
+  };
+
+  // TIPS FUNCTIONS
+  const handleAddTip = (e) => {
+    e.preventDefault();
+    const tipsInput = e.target.previousSibling.value;
+    if (tipsInput.trim() !== '') {
+      setTips([...tips, tipsInput.trim()]);
       e.target.previousSibling.value = '';
     }
   };
@@ -217,9 +229,20 @@ const CreatePost = ({ user, setPosts }) => {
         </div>
       ))}
 
-      <label htmlFor='STEPS'>Steps</label>
+      <label htmlFor='steps'>Steps</label>
       <textarea {...register('steps')} id='steps' className={styles.input} />
       <button onClick={handleAddStep}>Add</button>
+
+      {/* TIPS */}
+      {tips.map((tip, index) => (
+        <div key={index}>
+          <span>{tip}</span>
+        </div>
+      ))}
+
+      <label htmlFor='tips'>Tips</label>
+      <textarea {...register('tips')} id='tips' className={styles.input} />
+      <button onClick={handleAddTip}>Add</button>
 
       {/* SUBMIT FORM */}
       <button type='submit' disabled={inputDisabled} className={styles.submit}>
