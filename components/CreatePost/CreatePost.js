@@ -3,10 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './CreatePost.module.css';
 
-// import { useUser } from '../../context/UserContext.js';
-
 const CreatePost = ({ user, setPosts }) => {
-  // const user = useUser();
   const router = useRouter();
 
   const { register, handleSubmit, reset } = useForm({
@@ -19,6 +16,7 @@ const CreatePost = ({ user, setPosts }) => {
   const [servings, setServings] = useState(1);
   const [difficulty, setDifficulty] = useState('');
   const [ingredients, setIngredients] = useState([]);
+  const [steps, setSteps] = useState([]);
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
@@ -32,6 +30,7 @@ const CreatePost = ({ user, setPosts }) => {
       cookingtime: value.cooktime,
       difficulty: value.difficulty,
       ingredients: ingredients,
+      steps: steps,
       likes: [],
       user: {
         id: user.id,
@@ -96,6 +95,16 @@ const CreatePost = ({ user, setPosts }) => {
     }
   };
 
+  // STEPS FUNCTIONS
+  const handleAddStep = (e) => {
+    e.preventDefault();
+    const stepsInput = e.target.previousSibling.value;
+    if (stepsInput.trim() !== '') {
+      setSteps([...steps, stepsInput.trim()]);
+      e.target.previousSibling.value = '';
+    }
+  };
+
   const removeIngredient = (index) => {
     setIngredients(ingredients.filter((el, i) => i !== index));
   };
@@ -132,15 +141,6 @@ const CreatePost = ({ user, setPosts }) => {
       {/* SERVINGS */}
       <p>Servings</p>
       <div className={styles.servingsContainer}>
-        {/* <label htmlFor='servings'>Servings</label> */}
-        {/* <input
-          className={[styles.servings, styles.input]}
-          id='servings'
-          placeholder={servings}
-          type='number'
-          min={1}
-          max={100}
-        /> */}
         <p>{servings}</p>
         <div className={styles.counterContainer}>
           <span className={styles.counter} onClick={increase}>
@@ -209,6 +209,17 @@ const CreatePost = ({ user, setPosts }) => {
         className={styles.tagInput}
       />
       <button onClick={handleAddIngredient}>Add</button>
+
+      {/* COOKING STEPS */}
+      {steps.map((step, index) => (
+        <div key={index}>
+          <span>{step}</span>
+        </div>
+      ))}
+
+      <label htmlFor='STEPS'>Steps</label>
+      <textarea {...register('steps')} id='steps' className={styles.input} />
+      <button onClick={handleAddStep}>Add</button>
 
       {/* SUBMIT FORM */}
       <button type='submit' disabled={inputDisabled} className={styles.submit}>
