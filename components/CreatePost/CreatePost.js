@@ -89,37 +89,56 @@ const CreatePost = ({ user, setPosts }) => {
   // INGREDIENTS FUNCTIONS
 
   const handleAddIngredient = (e) => {
-    e.preventDefault();
-    const ingredientsInput = e.target.previousSibling.value;
-    if (ingredientsInput.trim() !== '') {
-      setIngredients([...ingredients, ingredientsInput.trim()]);
-      e.target.previousSibling.value = '';
-    }
-  };
-
-  // STEPS FUNCTIONS
-  const handleAddStep = (e) => {
-    e.preventDefault();
-    const stepsInput = e.target.previousSibling.value;
-    if (stepsInput.trim() !== '') {
-      setSteps([...steps, stepsInput.trim()]);
-      e.target.previousSibling.value = '';
-    }
-  };
-
-  // TIPS FUNCTIONS
-  const handleAddTip = (e) => {
-    e.preventDefault();
-    const tipsInput = e.target.previousSibling.value;
-    if (tipsInput.trim() !== '') {
-      setTips([...tips, tipsInput.trim()]);
-      e.target.previousSibling.value = '';
+    if (e.type === 'click' || e.key === 'Enter') {
+      e.preventDefault();
+      const ingredientsInput = e.target.previousSibling.value || e.target.value;
+      if (ingredientsInput.trim() !== '') {
+        setIngredients([...ingredients, ingredientsInput.trim()]);
+        if (e.type === 'click') {
+          e.target.previousSibling.value = '';
+        } else {
+          e.target.value = '';
+        }
+      }
     }
   };
 
   const removeIngredient = (index) => {
     setIngredients(ingredients.filter((el, i) => i !== index));
   };
+
+  // STEPS FUNCTIONS
+  const handleAddStep = (e) => {
+    if (e.type === 'click' || e.key === 'Enter') {
+      e.preventDefault();
+      const stepsInput = e.target.previousSibling.value || e.target.value;
+      if (stepsInput.trim() !== '') {
+        setSteps([...steps, stepsInput.trim()]);
+        if (e.type === 'click') {
+          e.target.previousSibling.value = '';
+        } else {
+          e.target.value = '';
+        }
+      }
+    }
+  };
+
+  // TIPS FUNCTIONS
+  const handleAddTip = (e) => {
+    if (e.type === 'click' || e.key === 'Enter') {
+      e.preventDefault();
+      const tipsInput = e.target.previousSibling.value || e.target.value;
+      if (tipsInput.trim() !== '') {
+        setTips([...tips, tipsInput.trim()]);
+        if (e.type === 'click') {
+          e.target.previousSibling.value = '';
+        } else {
+          e.target.value = '';
+        }
+      }
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmitPost)} className={styles.form}>
       {/* FILE */}
@@ -200,6 +219,7 @@ const CreatePost = ({ user, setPosts }) => {
       </select>
 
       {/* INGREDIENTS */}
+
       <div className={styles.inputContainer}>
         {ingredients.map((ingredient, index) => (
           <div className={styles.tag} key={index}>
@@ -219,6 +239,7 @@ const CreatePost = ({ user, setPosts }) => {
         {...register('ingredients')}
         id='ingredients'
         className={styles.tagInput}
+        onKeyDown={handleAddIngredient}
       />
       <button onClick={handleAddIngredient}>Add</button>
 
@@ -230,7 +251,12 @@ const CreatePost = ({ user, setPosts }) => {
       ))}
 
       <label htmlFor='steps'>Steps</label>
-      <textarea {...register('steps')} id='steps' className={styles.input} />
+      <textarea
+        {...register('steps')}
+        id='steps'
+        className={styles.input}
+        onKeyDown={handleAddStep}
+      />
       <button onClick={handleAddStep}>Add</button>
 
       {/* TIPS */}
@@ -241,7 +267,12 @@ const CreatePost = ({ user, setPosts }) => {
       ))}
 
       <label htmlFor='tips'>Tips</label>
-      <textarea {...register('tips')} id='tips' className={styles.input} />
+      <textarea
+        {...register('tips')}
+        id='tips'
+        className={styles.input}
+        onKeyDown={handleAddTip}
+      />
       <button onClick={handleAddTip}>Add</button>
 
       {/* SUBMIT FORM */}
