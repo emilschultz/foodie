@@ -1,5 +1,4 @@
 import Post from '../Post/Post.js';
-import Link from 'next/link';
 import styles from './Posts.module.css';
 
 const Posts = ({ posts, setPosts }) => {
@@ -7,9 +6,7 @@ const Posts = ({ posts, setPosts }) => {
     <>
       {posts.map((post) => (
         <li key={post._id} className={styles.container}>
-          <Link post={post} href={`/recipe/${encodeURIComponent(post._id)}`}>
-            <Post post={post} setPosts={setPosts} />
-          </Link>
+          <Post post={post} setPosts={setPosts} />
         </li>
       ))}
     </>
