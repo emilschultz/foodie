@@ -2,10 +2,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../../context/UserContext.js';
+import { AiOutlineArrowRight } from 'react-icons/ai';
+
 import styles from './Post.module.css';
+import Link from 'next/link.js';
 
 const Post = ({ post, setPosts }) => {
-  const { _id, postedAt, body, user: foodieUser, likes, title } = post;
+  const { _id, body, user: foodieUser, likes, title, media } = post;
+  console.log(media);
   const user = useUser();
   const [deleted, setDeleted] = useState(false);
   const [updatingLike, setUpdatingLike] = useState(false);
@@ -95,7 +99,6 @@ const Post = ({ post, setPosts }) => {
       }),
     });
     const responseJson = await response.json();
-    console.log(responseJson);
     setDeleted(true);
     alert('Your post has been DELETED  💀');
   };
@@ -104,7 +107,7 @@ const Post = ({ post, setPosts }) => {
     <>
       {!deleted && (
         <div className={styles.post}>
-          <div>
+          <div className={styles.post_header}>
             <img
               src={foodieUser.picture}
               alt={foodieUser.name}
@@ -112,14 +115,13 @@ const Post = ({ post, setPosts }) => {
             />
             <div>
               <p>{foodieUser.nickname}</p>
-              <p>{new Date(postedAt).toLocaleString()}</p>
             </div>
           </div>
           <h1>{title}</h1>
           <p>{body}</p>
           <div>
             <div>
-              <p>
+              <p className={styles.likes}>
                 {likesState ? likesState.length : 0}
                 {` ${likesState.length === 1 ? 'person' : 'people'} liked this`}
               </p>
@@ -138,14 +140,35 @@ const Post = ({ post, setPosts }) => {
                   <button onClick={() => setModalOpened(false)}>Close</button>
                 </form>
               )}
-              {user.id === foodieUser.id && (
-                <div>
-                  <button onClick={() => editPost()}>Edit</button>
-                  <button onClick={() => deletePost()}>Delete</button>
+              <div className={styles.actions}>
+                <div className={styles.buttons}>
+                  {user.id === foodieUser.id && (
+                    <>
+                      <button className={styles.btn} onClick={() => editPost()}>
+                        Edit
+                      </button>
+                      <button
+                        className={styles.btn}
+                        onClick={() => deletePost()}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                  <button className={styles.btn} onClick={() => likePost()}>
+                    Like
+                  </button>
+                  <button className={styles.btn} onClick={() => followUser()}>
+                    Follow
+                  </button>
                 </div>
-              )}
-              <button onClick={() => likePost()}>Like</button>
-              <button onClick={() => followUser()}>Follow</button>
+                <Link
+                  href={`/recipe/${encodeURIComponent(post._id)}`}
+                  className={styles.link}
+                >
+                  <AiOutlineArrowRight className={styles.link_icon} />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
