@@ -5,11 +5,75 @@
   /* box-shadow:
     rgba(0, 0, 0, 0.1) 0px 3px 19px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post_header {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 10pt;
+  font-weight: 500;
 }
 
 .picture {
   border-radius: 50%;
-  width: 4rem;
-  height: 4rem;
+  width: 2rem;
+  height: 2rem;
   object-fit: cover;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  background-color: #242215;
+  color: aliceblue;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8pt;
+  cursor: pointer;
+}
+
+.link {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(36, 34, 21, 1);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition:
+    background-color 0.5s ease-in-out,
+    width 0.5s ease-in-out,
+    height 0.5s ease-in-out;
+}
+
+.link:hover {
+  cursor: pointer;
+  background-color: aliceblue;
+  color: rgba(36, 34, 21, 1);
+  border: 2px solid rgba(36, 34, 21, 1);
+
+  .link_icon {
+    color: rgba(36, 34, 21, 1);
+  }
+}
+
+.link_icon {
+  color: aliceblue;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.likes {
+  margin-bottom: 0.25rem;
 }
