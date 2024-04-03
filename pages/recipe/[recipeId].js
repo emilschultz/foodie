@@ -1,3 +1,4 @@
+import Navbar from '../../components/Navbar/Navbar.js';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
@@ -28,6 +29,7 @@ export default function RecipePage() {
     <>
       <h1>{title}</h1>
       <p>{body}</p>
+      <Navbar />
     </>
   );
 }
