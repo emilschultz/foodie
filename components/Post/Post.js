@@ -8,7 +8,7 @@ import styles from './Post.module.css';
 import Link from 'next/link.js';
 
 const Post = ({ post, setPosts }) => {
-  const { _id, body, user: foodieUser, likes, title, mediaURL } = post;
+  const { _id, body, user: foodieUser, likes, title, media } = post;
 
   const user = useUser();
   const [deleted, setDeleted] = useState(false);
@@ -117,9 +117,20 @@ const Post = ({ post, setPosts }) => {
               <p>{foodieUser.nickname}</p>
             </div>
           </div>
-          {mediaURL && <img src={mediaURL} />}
-          {/* {mediaURL && <video src={mediaURL} />} */}
-          {/* MAKE LOGIC FOR HANDLING .MOV FILES HERE */}
+          {media &&
+            (media.type === 'image/jpg' ||
+              media.type === 'image/jpeg' ||
+              media.type === 'image/png') && <img src={media.url} />}
+
+          {media &&
+            (media.type === 'video/quicktime' ||
+              media.type === 'video/mp4' ||
+              media.type === 'video/ogg') && (
+              <video autoPlay muted loop controls>
+                <source src={media.url} type='video/mp4' />
+                Your browser does not support the video tag.
+              </video>
+            )}
           <h1>{title}</h1>
           <p>{body}</p>
           <div>
