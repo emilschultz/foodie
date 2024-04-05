@@ -26,12 +26,20 @@ const CreatePost = ({ user, setPosts }) => {
   const [steps, setSteps] = useState([]);
   const [tips, setTips] = useState([]);
   const [mediaURL, setMediaURL] = useState();
+  const [media, setMedia] = useState();
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
     const post = {
       postedAt: Date.now(),
-      mediaURL,
+      media: {
+        type: media.type,
+        lastModified: media.lastModified,
+        lastModifiedDate: media.lastModifiedDate,
+        name: media.name,
+        size: media.size,
+        url: mediaURL,
+      },
       title: value.title,
       body: value.post,
       tags: tags,
@@ -103,10 +111,11 @@ const CreatePost = ({ user, setPosts }) => {
         },
         () => {
           // Handle successful uploads on complete
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log('File available at', downloadURL);
-            setMediaURL(downloadURL);
-          });
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              setMediaURL(downloadURL);
+            })
+            .then(setMedia(file));
         }
       );
     } else {
