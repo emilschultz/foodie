@@ -1,6 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
+
 import styles from './CreatePost.module.css';
 
 const CreatePost = ({ user, setPosts }) => {
@@ -18,11 +25,13 @@ const CreatePost = ({ user, setPosts }) => {
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
   const [tips, setTips] = useState([]);
+  const [mediaURL, setMediaURL] = useState();
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
     const post = {
       postedAt: Date.now(),
+      mediaURL,
       title: value.title,
       body: value.post,
       tags: tags,
@@ -61,6 +70,48 @@ const CreatePost = ({ user, setPosts }) => {
     setInputDisabled(false);
     alert('successfully postet a recipe');
     router.push('/');
+  };
+
+  // MEDIA FUNCTIONS
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.error(error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL);
+            setMediaURL(downloadURL);
+          });
+        }
+      );
+    } else {
+      console.error('no file selected');
+    }
   };
 
   // TAGS FUNCTIONS
@@ -142,8 +193,14 @@ const CreatePost = ({ user, setPosts }) => {
   return (
     <form onSubmit={handleSubmit(onSubmitPost)} className={styles.form}>
       {/* FILE */}
-      <label htmlFor='video'>File</label>
-      <input type='file' accept='video/*' />
+      <label htmlFor='media'>File</label>
+      <input
+        id='media'
+        {...register('media')}
+        type='file'
+        accept='media/*'
+        onChange={handleFileChange}
+      />
 
       {/* TITLE */}
       <label htmlFor='title'>Title</label>
