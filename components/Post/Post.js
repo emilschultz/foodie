@@ -8,8 +8,8 @@ import styles from './Post.module.css';
 import Link from 'next/link.js';
 
 const Post = ({ post, setPosts }) => {
-  const { _id, body, user: foodieUser, likes, title, media } = post;
-  console.log(media);
+  const { _id, body, user: foodieUser, likes, title, mediaURL } = post;
+
   const user = useUser();
   const [deleted, setDeleted] = useState(false);
   const [updatingLike, setUpdatingLike] = useState(false);
@@ -117,6 +117,9 @@ const Post = ({ post, setPosts }) => {
               <p>{foodieUser.nickname}</p>
             </div>
           </div>
+          {mediaURL && <img src={mediaURL} />}
+          {/* {mediaURL && <video src={mediaURL} />} */}
+          {/* MAKE LOGIC FOR HANDLING .MOV FILES HERE */}
           <h1>{title}</h1>
           <p>{body}</p>
           <div>
