@@ -60,6 +60,7 @@ const CreatePost = ({ user, setPosts }) => {
         picture: user.picture,
       },
     };
+
     const response = await fetch('/api/post', {
       method: 'POST',
       headers: {
@@ -122,6 +123,8 @@ const CreatePost = ({ user, setPosts }) => {
             case 'running':
               console.log('Upload is running');
               break;
+            case 'success':
+              console.log('Upload complete');
           }
         },
         (error) => {
@@ -232,7 +235,11 @@ const CreatePost = ({ user, setPosts }) => {
 
       {/* TITLE */}
       <label htmlFor='title'>Title</label>
-      <input {...register('title')} className={[styles.title, styles.input]} />
+      <input
+        id='title'
+        {...register('title')}
+        className={[styles.title, styles.input]}
+      />
 
       {/* DESCRIPTION */}
       <label htmlFor='description'>Description</label>
