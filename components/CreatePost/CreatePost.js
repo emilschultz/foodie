@@ -16,8 +16,10 @@ const CreatePost = ({ user, setPosts }) => {
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       post: '',
+      updatedUser: '',
     },
   });
+
   const [inputDisabled, setInputDisabled] = useState(false);
   const [tags, setTags] = useState([]);
   const [servings, setServings] = useState(1);
@@ -74,6 +76,23 @@ const CreatePost = ({ user, setPosts }) => {
         ...post,
       },
     ]);
+
+    const updatedUser = {
+      _id: user._id,
+      posts: user.posts ? [...user.posts, post] : [post],
+    };
+
+    const userPostsResponse = await fetch('/api/user/userPosts', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedUser),
+    });
+
+    const userResponseJson = await userPostsResponse.json();
+    console.log('USER RES JSON;', userResponseJson);
+
     reset();
     setInputDisabled(false);
     alert('successfully postet a recipe');
