@@ -232,7 +232,7 @@ const CreatePost = ({ user, setPosts }) => {
       </div>
 
       <label htmlFor='tags'>Tags</label>
-      <input {...register('tags')} className={styles.tagInput} />
+      <input id='tags' {...register('tags')} className={styles.tagInput} />
       <button onClick={handleAddTag}>Add</button>
 
       {/* SERVINGS */}
