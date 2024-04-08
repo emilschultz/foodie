@@ -16,7 +16,6 @@ export default function RecipePage() {
             `/api/recipe?postId=${router.query.recipeId}`
           );
           const getRecipeJson = await getRecipe.json();
-          console.log('JSON', getRecipeJson);
           setRecipe(getRecipeJson);
         } catch (error) {
           console.error('Error fetching recipe:', error);
