@@ -108,11 +108,15 @@ const Post = ({ post, setPosts }) => {
       {!deleted && (
         <div className={styles.post}>
           <div className={styles.post_header}>
-            <img
-              src={foodieUser.picture}
-              alt={foodieUser.name}
-              className={styles.picture}
-            />
+            <Link href={`/chef/${encodeURIComponent(foodieUser.id)}`}>
+              {' '}
+              {/* Adjust the route according to your application */}
+              <img
+                src={foodieUser.picture}
+                alt={foodieUser.name}
+                className={styles.picture}
+              />
+            </Link>
             <div>
               <p>{foodieUser.nickname}</p>
             </div>
