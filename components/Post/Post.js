@@ -131,7 +131,7 @@ const Post = ({ post, setPosts }) => {
               media.type === 'video/mp4' ||
               media.type === 'video/ogg') && (
               <video autoPlay muted loop controls>
-                <source src={media.url} type='video/mp4' />
+                <source src={media.url} type={media.type} />
                 Your browser does not support the video tag.
               </video>
             )}
