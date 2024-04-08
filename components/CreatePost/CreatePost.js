@@ -92,7 +92,6 @@ const CreatePost = ({ user, setPosts }) => {
     });
 
     const userResponseJson = await userPostsResponse.json();
-    console.log('USER RES JSON;', userResponseJson);
 
     reset();
     setInputDisabled(false);
