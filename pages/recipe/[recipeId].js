@@ -41,7 +41,8 @@ export default function RecipePage() {
       })();
     }
   }, [router.query.recipeId]);
-
+  // Make a function for related recipes.
+  // It should make a call to the api and filter on the tags.x
   return (
     <>
       {recipe && (
