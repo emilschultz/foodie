@@ -3,11 +3,15 @@ import Navbar from '../../components/Navbar/Navbar';
 import ProfilePosts from '../../components/profilePosts/ProfilePosts';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
+import { useSetUser } from '../../context/UserContext';
+import { useRouter } from 'next/router';
 import styles from './page.module.css';
 
 const Profile = () => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+  const setUserContext = useSetUser();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,21 +31,28 @@ const Profile = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, []);
 
+  const handleLogout = () => {
+    setUser(null); 
+    setUserContext(null);
+    router.push('/api/auth/logout')
+  }
+
   return (
     <>
-      <div>
-        <h1>{user.nickname}</h1>
-        <img src={user.picture} />
-      </div>
-      <Link href='/api/auth/logout' className={styles.signout}>
+      {user && (
+        <div>
+          <h1>{user.nickname}</h1>
+          <img src={user.picture} /> 
+        </div>
+      )}
+      <button onClick={handleLogout} className={styles.signout}>
         Sign out
         <AiOutlineLogout />
-      </Link>
-      {userPosts.length > 0 ? (
+      </button>
+      {user && userPosts.length > 0 ? (
         <ProfilePosts posts={userPosts} setPosts={setUserPosts} />
       ) : (
         <p> You have </p>
