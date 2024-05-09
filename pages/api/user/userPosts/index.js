@@ -36,12 +36,10 @@ export default withApiAuthRequired(async function handler(req, res) {
         });
         const readDataJson = await readData.json();
         res.status(200).json(readDataJson);
-        console.log('DTJSON DOC', readDataJson);
         break;
 
       case 'PUT':
         const { _id, posts } = req.body;
-        console.log('BODYÆÆØØÆØÆØÆØÆØÆØÆ', req.body);
         await new Promise((resolve) => setTimeout(resolve, 2000));
         const updateData = await fetch(`${baseUrl}/updateOne`, {
           ...fetchOptions,
