@@ -3,7 +3,9 @@ import { useState, createContext, useContext } from 'react';
 const UserContext = createContext();
 const SetUserContext = createContext();
 
+// access the current user data stored in the UserContext
 export function useUser() {
+  // retrieve the context value
   return useContext(UserContext);
 }
 
