@@ -6,7 +6,6 @@ import ChefProfile from '../../components/chefProfile/ChefProfile.js';
 export default function ChefPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const foodieUser = user;
 
   useEffect(() => {
     if (router.query.chefId) {
@@ -16,7 +15,6 @@ export default function ChefPage() {
             `/api/chef?chefId=${router.query.chefId}`
           );
           const getUserJson = await getUser.json();
-          console.log(getUserJson);
           setUser(getUserJson);
         } catch (error) {
           console.error('Error fetching chef with ID:', error);
@@ -26,7 +24,7 @@ export default function ChefPage() {
   }, [router.query.chefId]);
 
   const { document } = user || {};
-  const { nickname, picture, posts, id } = document || {};
+  const { nickname, picture, posts, id, followers } = document || {};
 
   return (
     <>
@@ -36,6 +34,7 @@ export default function ChefPage() {
           picture={picture}
           posts={posts}
           id={id}
+          followers={followers}
         />
       )}
 

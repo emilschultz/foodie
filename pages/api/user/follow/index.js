@@ -20,7 +20,7 @@ export default withApiAuthRequired(async function handler(req, res) {
   try {
     switch (req.method) {
       case 'PUT':
-        const action = req.body.action === 'follow' ? '$addToSet' : '$pull';
+        // const action = req.body.action === 'follow' ? '$addToSet' : '$pull';
         const updateData = await fetch(`${baseUrl}/updateOne`, {
           ...fetchOptions,
           body: JSON.stringify({

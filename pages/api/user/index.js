@@ -30,6 +30,7 @@ export default withApiAuthRequired(async function handler(req, res) {
         });
 
         const readDataJson = await readData.json();
+        console.log("ReadDAtaJSON:::",readDataJson);
 
         if (!readDataJson.document.email) {
           await fetch(`${baseUrl}/updateOne`, {
@@ -50,6 +51,7 @@ export default withApiAuthRequired(async function handler(req, res) {
                   name: user.name,
                   picture: user.picture,
                   nickname: user.nickname,
+                  followers: [],
                 },
               },
             }),
