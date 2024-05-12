@@ -1,12 +1,10 @@
 import {
-  getSession,
   getAccessToken,
   withApiAuthRequired,
 } from '@auth0/nextjs-auth0';
 
 export default withApiAuthRequired(async function handler(req, res) {
   const { accessToken } = await getAccessToken(req, res);
-  const { user } = await getSession(req, res);
 
   const fetchOptions = {
     method: 'POST',
