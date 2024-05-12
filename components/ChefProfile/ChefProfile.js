@@ -1,7 +1,21 @@
-import styles from './ChefProfile.module.css';
-import Link from 'next/link';
+'use client';
+import { useState } from 'react';
+import styles from './ChefProfile.module.css'; 
 
-export const ChefProfile = ({ posts, nickname, picture, id }) => {
+export const ChefProfile = ({ posts, nickname, picture, id, followers }) => {
+  const [followState, setFollowState] = useState(followers)
+  
+  const follow = async () => {
+    const response = await fetch('/api/user/follow', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // body: ''
+    })
+    console.log(response);
+  };
+  
   return (
     <>
       <section className={styles.bio}>
@@ -9,9 +23,10 @@ export const ChefProfile = ({ posts, nickname, picture, id }) => {
         <p>@{nickname}</p>
         <div className={styles.stats}>
           <p>Following {}</p>
-          <p>Followers {}</p>
+          <p>Followers {followers.length}</p>
           <p>Likes {}</p>
         </div>
+        <button onClick={follow}>Follow</button>
       </section>
       <section className={styles.grid}>
         {posts.map(
