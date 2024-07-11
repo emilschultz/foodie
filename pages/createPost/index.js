@@ -7,6 +7,7 @@ import { useState } from 'react';
 const Create = ({ setPosts }) => {
   const [newPost, setNewPost] = useState('');
   const user = useUser();
+  console.log("Create Post User", user);
   return (
     <>
       <div>

@@ -16,6 +16,7 @@ export default function Home() {
     (async () => {
       const getUser = await fetch('/api/user');
       const getUserJson = await getUser.json();
+      console.log("INDEX / HOME User JSON:", getUserJson);
       setUser(getUserJson);
 
       const getPosts = await fetch('/api/post');

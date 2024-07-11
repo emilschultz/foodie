@@ -25,7 +25,7 @@ export default withApiAuthRequired(async function handler(req, res) {
             dataSource: process.env.MONGODB_DATA_SOURCE,
             database: 'foodie',
             collection: 'users',
-            filter: { email: user.email }
+            // filter: { email: user.email }
           }),
         });
 
@@ -52,6 +52,7 @@ export default withApiAuthRequired(async function handler(req, res) {
                   picture: user.picture,
                   nickname: user.nickname,
                   followers: [],
+                  following: [],
                 },
               },
             }),

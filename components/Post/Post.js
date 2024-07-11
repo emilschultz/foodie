@@ -42,7 +42,6 @@ const Post = ({ post, setPosts }) => {
     });
 
     const responseJson = await response.json();
-    console.log(responseJson);
 
     setPosts((posts) =>
       posts.map((post) => {

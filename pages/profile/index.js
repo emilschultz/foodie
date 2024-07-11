@@ -18,7 +18,9 @@ const Profile = () => {
       try {
         const getUser = await fetch('/api/user');
         const getUserJson = await getUser.json();
+        // console.log("User JSON:", getUserJson);
         setUser(getUserJson);
+
 
         const getPosts = await fetch('/api/post');
         const getPostsJson = await getPosts.json();

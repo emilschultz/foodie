@@ -23,7 +23,7 @@ export const ChefProfile = ({ posts, nickname, picture, id, followers }) => {
         <p>@{nickname}</p>
         <div className={styles.stats}>
           <p>Following {}</p>
-          <p>Followers {followers.length}</p>
+          <p>Followers {followers ? followers.length : 0}</p>
           <p>Likes {}</p>
         </div>
         <button onClick={follow}>Follow</button>
