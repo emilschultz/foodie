@@ -1,6 +1,6 @@
 'use client';
 import Head from 'next/head';
-import { AuthProvider } from '../context/authContexts.js'
+import { AuthProvider } from '../context/AuthContext.js'
 import styles from './page.module.css';
 import './globals.css';
 
