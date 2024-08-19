@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useSetUser } from '../context/UserContext.js';
 import styles from './page.module.css';
@@ -11,21 +11,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const setUser = useSetUser();
-
-  useEffect(() => {
-    (async () => {
-      const getUser = await fetch('/api/user');
-      const getUserJson = await getUser.json();
-      console.log("INDEX / HOME User JSON:", getUserJson);
-      setUser(getUserJson);
-
-      const getPosts = await fetch('/api/post');
-      const getPostssJson = await getPosts.json();
-      setPosts(getPostssJson);
-
-      setIsLoading(false);
-    })();
-  }, []);
 
   return (
     <section className={styles.main}>
