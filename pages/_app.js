@@ -34,6 +34,7 @@ export default function App({ Component, pageProps }) {
       <main className={styles.main}>
         <UserProvider>
           <AtlasUserProvider>
+            {/* component is a page component from the pages folder and the ...pageProps is all the initial properties for the page. These can include data fetched at build time, query parameters, or any other props needed by the page component.   */}
             <Component {...pageProps} />
           </AtlasUserProvider>
         </UserProvider>

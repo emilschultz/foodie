@@ -10,6 +10,7 @@ import Navbar from '../components/Navbar/Navbar.js';
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState("Home");
   const setUser = useSetUser();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Home() {
     <section className={styles.main}>
       <div className={styles.description}>foodie</div>
       <Posts posts={posts} setPosts={setPosts} />
-      <Navbar setPosts={setPosts} />
+      <Navbar page={page} setPage={setPage} />
     </section>
   );
 }

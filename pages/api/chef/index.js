@@ -1,3 +1,4 @@
+// This is the page component for fetching the chef of a post - When clicking the image/name of a chef on a post.
 import {
   getSession,
   getAccessToken,

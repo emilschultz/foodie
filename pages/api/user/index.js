@@ -1,3 +1,4 @@
+// This is the page component for the currently logged in user
 import {
   getSession,
   getAccessToken,
