@@ -23,6 +23,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthContext'; 
 import { logOut } from '../lib/auth';
+import Navbar from '../components/Navbar/Navbar.js'
+import styles from './page.module.css'
 
 export default function Home() {
   const { user } = useAuth();  // Access the current user from the context
@@ -30,13 +32,11 @@ export default function Home() {
 
   useEffect(() => {
     if (!user) {
-      // If no user is logged in, redirect to the sign-in page
       router.replace('/signin');
     }
   }, [user, router]);
 
   if (!user) {
-    // Optionally, you can return null or a loading state until the redirect happens
     return null;
   }
 
@@ -50,16 +50,11 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-      {user ? (
-        <>
-          <p>Signed in as: {user.email}</p>
-          <button onClick={handleSignOut}>Sign Out</button>
-        </>
-      ) : (
-        <p>Please sign in.</p>
-      )}
-    </div>
+        <section className={styles.main}>
+       <div className={styles.description}>foodie</div>      
+        <p>Signed in as: {user.email}</p>
+        <button onClick={handleSignOut}>Sign Out</button>
+       <Navbar />
+     </section>
   );
 }
