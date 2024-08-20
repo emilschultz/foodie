@@ -6,6 +6,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [error, setError] = useState(null);
   const router = useRouter();
 
@@ -16,6 +18,8 @@ export default function SignUp() {
     try {
       const additionalData = {
         nickname: nickname,
+        firstname: firstname,
+        lastname: lastname,
       };
       // Sign up the user with email and password, and store additional data in Firestore
       await signUp(email, password, additionalData);
@@ -41,6 +45,20 @@ export default function SignUp() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          required
+        />
+        <input
+          type="text"
+          value={firstname}
+          onChange={(e) => setFirstname(e.target.value)}
+          placeholder="First name"
+          required
+        />
+        <input
+          type="text"
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
+          placeholder="Last Name"
           required
         />
         <input
