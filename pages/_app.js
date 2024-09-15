@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
         <title>Foodie - Food lovers</title>
         <meta
           name='viewport'
-          content='minimum-scale=1, initial-scale=1, width=device-width'
+          content='minimum-scale=1, initial-scale=1, maximum-scale=1, width=device-width'
         />
       </Head>
       <main className={styles.main}>
