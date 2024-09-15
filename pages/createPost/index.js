@@ -11,6 +11,7 @@ const Create = () => {
   const {user} = useAuth();
   const router = useRouter();
 
+  // MAKE this a utility function
   useEffect(() => {
     const fetchUserDoc = async () => {
       if (user) {
@@ -31,7 +32,6 @@ const Create = () => {
 
     fetchUserDoc();
   }, [user, router]);
-  console.log("doc:",userDoc);
 
   return (
     <>
