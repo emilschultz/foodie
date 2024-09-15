@@ -1,39 +1,60 @@
-'use client';
+// 'use client';
 
-import { useState, useEffect } from 'react';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { useSetUser } from '../context/UserContext.js';
-import styles from './page.module.css';
-import Posts from '../components/Posts/Posts.js';
-import Navbar from '../components/Navbar/Navbar.js';
+// import { useState } from 'react';
+// import { useSetUser } from '../context/UserContext.js';
+// import styles from './page.module.css';
+// import Posts from '../components/Posts/Posts.js';
+// import Navbar from '../components/Navbar/Navbar.js';
+
+// export default function Home() {
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [posts, setPosts] = useState([]);
+//   const setUser = useSetUser();
+
+//   return (
+//     <section className={styles.main}>
+//       <div className={styles.description}>foodie</div>
+//       <Posts posts={posts} setPosts={setPosts} />
+//       <Navbar setPosts={setPosts} />
+//     </section>
+//   );
+// }
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useAuth } from '../context/AuthContext'; 
+import { logOut } from '../lib/auth';
+import Navbar from '../components/Navbar/Navbar.js'
+import styles from './page.module.css'
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState("Home");
-  const setUser = useSetUser();
+  const { user } = useAuth();  // Access the current user from the context
+  const router = useRouter();
 
   useEffect(() => {
-    (async () => {
-      const getUser = await fetch('/api/user');
-      const getUserJson = await getUser.json();
-      setUser(getUserJson);
+    if (!user) {
+      router.replace('/signin');
+    }
+  }, [user, router]);
 
-      const getPosts = await fetch('/api/post');
-      const getPostssJson = await getPosts.json();
-      setPosts(getPostssJson);
+  if (!user) {
+    return null;
+  }
 
-      setIsLoading(false);
-    })();
-  }, []);
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+      router.push('/signin'); // Redirect to sign-in page after sign-out
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
-    <section className={styles.main}>
-      <div className={styles.description}>foodie</div>
-      <Posts posts={posts} setPosts={setPosts} />
-      <Navbar page={page} setPage={setPage} />
-    </section>
+        <section className={styles.main}>
+       <div className={styles.description}>foodie</div>      
+        <p>Signed in as: {user.email}</p>
+        <button onClick={handleSignOut}>Sign Out</button>
+       <Navbar />
+     </section>
   );
 }
-
-export const getServerSideProps = withPageAuthRequired();

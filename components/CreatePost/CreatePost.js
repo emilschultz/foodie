@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react'; 
 import { useRouter } from 'next/router';
 import {
   getStorage,
@@ -7,10 +7,14 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
+import { collection, addDoc, doc, getDoc } from 'firebase/firestore'; 
+import { db } from '../../lib/firebase'; 
 
 import styles from './CreatePost.module.css';
 
-const CreatePost = ({ user, setPosts }) => {
+const CreatePost = ({ user }) => {
+  const [userDoc, setUserDoc] = useState(null)
+
   const router = useRouter();
 
   const { register, handleSubmit, reset } = useForm({
@@ -19,6 +23,30 @@ const CreatePost = ({ user, setPosts }) => {
       updatedUser: '',
     },
   });
+
+  // MAKE this a utility function
+  useEffect(() => {
+    const fetchUserDoc = async () => {
+      if (user) {
+        try {
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            setUserDoc(userDocSnap.data());
+          } else {
+            console.error('No user document - user doenst exist!');
+            // Optionally redirect to a sign-up page or error page
+          }
+        } catch (error) {
+          console.error('Error fetching user document:', error);
+        }
+      }
+    };
+
+    fetchUserDoc();
+  }, [user, router]);
+  console.log("dokkeloks",userDoc);
+
 
   const [inputDisabled, setInputDisabled] = useState(false);
   const [tags, setTags] = useState([]);
@@ -32,16 +60,20 @@ const CreatePost = ({ user, setPosts }) => {
 
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
+
+    // Create the post object with media URL if media was uploaded
     const post = {
       postedAt: Date.now(),
-      media: {
-        type: media.type,
-        lastModified: media.lastModified,
-        lastModifiedDate: media.lastModifiedDate,
-        name: media.name,
-        size: media.size,
-        url: mediaURL,
-      },
+      media: media
+        ? {
+            type: media.type,
+            lastModified: media.lastModified,
+            lastModifiedDate: media.lastModifiedDate,
+            name: media.name,
+            size: media.size,
+            url: mediaURL,
+          }
+        : null,
       title: value.title,
       body: value.post,
       tags: tags,
@@ -54,49 +86,27 @@ const CreatePost = ({ user, setPosts }) => {
       tips: tips,
       likes: [],
       user: {
-        id: user.id,
-        name: user.name,
-        nickname: user.nickname,
-        picture: user.picture,
+        uid: user.uid,
+        name: user.displayName || userDoc.firstname,
+        nickname: userDoc.nickname || user.email,
+        picture: user.photoURL || 'https://via.placeholder.com/150',
       },
     };
 
-    const response = await fetch('/api/post', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-    });
-    const responseJson = await response.json();
+    try {
+      // Save the post to Firestore
+      const docRef = await addDoc(collection(db, 'recipes'), post);
 
-    setPosts((posts) => [
-      ...posts,
-      {
-        _id: responseJson.insertedId,
-        ...post,
-      },
-    ]);
-
-    const updatedUser = {
-      _id: user._id,
-      posts: user.posts ? [...user.posts, post] : [post],
-    };
-
-    const userPostsResponse = await fetch('/api/user/userPosts', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedUser),
-    });
-
-    const userResponseJson = await userPostsResponse.json();
-
-    reset();
-    setInputDisabled(false);
-    alert('successfully postet a recipe');
-    router.push('/');
+      console.log('Recipe created with ID:', docRef.id);
+      reset();
+      setInputDisabled(false);
+      alert('Recipe successfully posted!');
+      router.push('/');
+    } catch (error) {
+      console.error('Error creating recipe:', error);
+      alert('Failed to create the recipe. Please try again.');
+      setInputDisabled(false);
+    }
   };
 
   // MEDIA FUNCTIONS
@@ -110,37 +120,22 @@ const CreatePost = ({ user, setPosts }) => {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-            case 'success':
-              console.log('Upload complete');
-          }
         },
         (error) => {
-          // Handle unsuccessful uploads
-          console.error(error);
+          console.error('Error during media upload:', error);
         },
         () => {
-          // Handle successful uploads on complete
-          getDownloadURL(uploadTask.snapshot.ref)
-            .then((downloadURL) => {
-              setMediaURL(downloadURL);
-            })
-            .then(setMedia(file));
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setMediaURL(downloadURL);
+            setMedia(file);
+          });
         }
       );
     } else {
-      console.error('no file selected');
+      console.error('No file selected');
     }
   };
 
@@ -155,37 +150,29 @@ const CreatePost = ({ user, setPosts }) => {
   };
 
   const removeTag = (index) => {
-    setTags(tags.filter((el, i) => i !== index));
+    setTags(tags.filter((_, i) => i !== index));
   };
 
   // SERVINGS FUNCTIONS
-  const increase = () => {
-    setServings((servings) => servings + 1);
-  };
+  const increase = () => setServings((servings) => servings + 1);
 
-  const decrease = () => {
-    setServings((servings) => servings - 1);
-  };
+  const decrease = () => setServings((servings) => Math.max(servings - 1, 1));
 
   // INGREDIENTS FUNCTIONS
-
   const handleAddIngredient = (e) => {
     if (e.type === 'click' || e.key === 'Enter') {
       e.preventDefault();
       const ingredientsInput = e.target.previousSibling.value || e.target.value;
       if (ingredientsInput.trim() !== '') {
         setIngredients([...ingredients, ingredientsInput.trim()]);
-        if (e.type === 'click') {
-          e.target.previousSibling.value = '';
-        } else {
-          e.target.value = '';
-        }
+        e.target.previousSibling.value = '';
+        e.target.value = '';
       }
     }
   };
 
   const removeIngredient = (index) => {
-    setIngredients(ingredients.filter((el, i) => i !== index));
+    setIngredients(ingredients.filter((_, i) => i !== index));
   };
 
   // STEPS FUNCTIONS
@@ -195,11 +182,8 @@ const CreatePost = ({ user, setPosts }) => {
       const stepsInput = e.target.previousSibling.value || e.target.value;
       if (stepsInput.trim() !== '') {
         setSteps([...steps, stepsInput.trim()]);
-        if (e.type === 'click') {
-          e.target.previousSibling.value = '';
-        } else {
-          e.target.value = '';
-        }
+        e.target.previousSibling.value = '';
+        e.target.value = '';
       }
     }
   };
@@ -211,11 +195,8 @@ const CreatePost = ({ user, setPosts }) => {
       const tipsInput = e.target.previousSibling.value || e.target.value;
       if (tipsInput.trim() !== '') {
         setTips([...tips, tipsInput.trim()]);
-        if (e.type === 'click') {
-          e.target.previousSibling.value = '';
-        } else {
-          e.target.value = '';
-        }
+        e.target.previousSibling.value = '';
+        e.target.value = '';
       }
     }
   };
@@ -223,26 +204,26 @@ const CreatePost = ({ user, setPosts }) => {
   return (
     <form onSubmit={handleSubmit(onSubmitPost)} className={styles.form}>
       {/* FILE */}
-      <label htmlFor='media'>File</label>
+      <label htmlFor="media">File</label>
       <input
-        id='media'
+        id="media"
         {...register('media')}
-        type='file'
-        accept='media/*'
+        type="file"
+        accept="media/*"
         onChange={handleFileChange}
       />
 
       {/* TITLE */}
-      <label htmlFor='title'>Title</label>
+      <label htmlFor="title">Title</label>
       <input
-        id='title'
+        id="title"
         {...register('title')}
-        className={[styles.title, styles.input]}
+        className={[styles.title, styles.input].join(' ')}
       />
 
       {/* DESCRIPTION */}
-      <label htmlFor='description'>Description</label>
-      <textarea {...register('post')} id='description' />
+      <label htmlFor="description">Description</label>
+      <textarea {...register('post')} id="description" />
 
       {/* TAGS */}
       <div className={styles.inputContainer}>
@@ -256,8 +237,8 @@ const CreatePost = ({ user, setPosts }) => {
         ))}
       </div>
 
-      <label htmlFor='tags'>Tags</label>
-      <input id='tags' {...register('tags')} className={styles.tagInput} />
+      <label htmlFor="tags">Tags</label>
+      <input id="tags" {...register('tags')} className={styles.tagInput} />
       <button onClick={handleAddTag}>Add</button>
 
       {/* SERVINGS */}
@@ -275,42 +256,41 @@ const CreatePost = ({ user, setPosts }) => {
       </div>
 
       {/* PREP/COOK TIME */}
-      <label htmlFor='preptime'>Prep</label>
+      <label htmlFor="preptime">Prep</label>
       <input
         {...register('preptime')}
-        id='preptime'
+        id="preptime"
         className={styles.input}
-        placeholder='Preperation time in minutes'
-        type='number'
+        placeholder="Preparation time in minutes"
+        type="number"
         step={5}
       />
 
-      <label htmlFor='cookingtime'>Cook</label>
+      <label htmlFor="cookingtime">Cook</label>
       <input
         {...register('cooktime')}
-        id='cookingtime'
+        id="cookingtime"
         className={styles.input}
-        placeholder='Cooking time in minutes'
-        type='number'
+        placeholder="Cooking time in minutes"
+        type="number"
         step={5}
       />
 
       {/* DIFFICULTY */}
-      <label htmlFor='difficulty'>Difficulty</label>
+      <label htmlFor="difficulty">Difficulty</label>
       <select
         {...register('difficulty')}
         className={styles.input}
-        id='difficulty'
+        id="difficulty"
         onChange={(e) => setDifficulty(e.target.value)}
         value={difficulty}
       >
-        <option value='easy'>Easy</option>
-        <option value='medium'>Medium</option>
-        <option value='hard'>Hard</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
       </select>
 
       {/* INGREDIENTS */}
-
       <div className={styles.inputContainer}>
         {ingredients.map((ingredient, index) => (
           <div className={styles.tag} key={index}>
@@ -325,10 +305,10 @@ const CreatePost = ({ user, setPosts }) => {
         ))}
       </div>
 
-      <label htmlFor='ingredients'>Ingredients</label>
+      <label htmlFor="ingredients">Ingredients</label>
       <input
         {...register('ingredients')}
-        id='ingredients'
+        id="ingredients"
         className={styles.tagInput}
         onKeyDown={handleAddIngredient}
       />
@@ -341,10 +321,10 @@ const CreatePost = ({ user, setPosts }) => {
         </div>
       ))}
 
-      <label htmlFor='steps'>Steps</label>
+      <label htmlFor="steps">Steps</label>
       <textarea
         {...register('steps')}
-        id='steps'
+        id="steps"
         className={styles.input}
         onKeyDown={handleAddStep}
       />
@@ -357,20 +337,21 @@ const CreatePost = ({ user, setPosts }) => {
         </div>
       ))}
 
-      <label htmlFor='tips'>Tips</label>
+      <label htmlFor="tips">Tips</label>
       <textarea
         {...register('tips')}
-        id='tips'
+        id="tips"
         className={styles.input}
         onKeyDown={handleAddTip}
       />
       <button onClick={handleAddTip}>Add</button>
 
       {/* SUBMIT FORM */}
-      <button type='submit' disabled={inputDisabled} className={styles.submit}>
+      <button type="submit" disabled={inputDisabled} className={styles.submit}>
         Submit
       </button>
     </form>
   );
 };
+
 export default CreatePost;

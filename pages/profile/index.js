@@ -1,62 +1,98 @@
-import Link from 'next/link';
 import Navbar from '../../components/Navbar/Navbar';
-import ProfilePosts from '../../components/profilePosts/ProfilePosts';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { useState, useEffect } from 'react';
-import { useSetUser } from '../../context/UserContext';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { logOut } from '../../lib/auth';
+import { useAuth } from '../../context/AuthContext';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 import styles from './page.module.css';
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
-  const setUserContext = useSetUser();
+  const { user } = useAuth();
+  const [userData, setUserData] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const getUser = await fetch('/api/user');
-        const getUserJson = await getUser.json();
-        setUser(getUserJson);
+    const fetchUserData = async () => {
+      if (user) {
+        try {
+          // Ensure user.uid is valid
+          if (!user.uid) {
+            throw new Error('User UID is not defined');
+          }
+          
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDoc = await getDoc(userDocRef);
 
-        const getPosts = await fetch('/api/post');
-        const getPostsJson = await getPosts.json();
-
-        const filteredPosts = getPostsJson.filter(
-          (post) => post.user.id === getUserJson.id
-        );
-        setUserPosts(filteredPosts);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      } else {
+        // router.push('/signin');
       }
     };
-    fetchData();
-  }, []);
 
-  const handleLogout = () => {
-    setUser(null); 
-    setUserContext(null);
-    router.push('/api/auth/logout')
-  }
+    fetchUserData();
+  }, [user, router]);
+
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+      router.push('/signin');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
     <>
-      {user && (
-        <div>
-          <h1>{user.nickname}</h1>
-          <img src={user.picture} /> 
-        </div>
+      {userData ? (
+        <>
+          <section className={styles.bio}>
+            {/* {userData.profilePicture && <img src={userData.profilePicture} alt="Profile" />} */}
+            <img className={styles.picture} src='https://picsum.photos/100'/>
+            <div className={styles.names}>
+            <p className={styles.name}>{userData.firstname} {userData.lastname}</p>
+            <p className={styles.nickname}>@{userData.nickname}</p>
+            </div>
+            <div className={styles.statscontainer}>
+              <div className={styles.stats}>
+                <p className={styles.statNumber} >{userData.followers ? userData.followers.length : 2883}</p>
+                <p className={styles.statTitle}>Followers</p> 
+              </div>
+              
+              <div className={styles.stats}>
+              <p className={styles.statNumber}>{userData.following.length > 0 ? userData.following.length : 354}</p>
+              <p className={styles.statTitle}>Following</p>
+              </div>
+
+              <div className={styles.stats}>
+              <p className={styles.statNumber}>{userData.posts.length > 0 ? userData.posts.length : 172}</p>
+              <p className={styles.statTitle}>Recipes</p>
+              </div>
+
+            </div>
+            {/* Follow knappen skal egentlig ikke være her, men på chefProfile. Dette er jo ens egen profilside */}
+            <button className={styles.followBtn}>Follow</button>
+          </section>
+
+          <section>
+            <h3>Posts</h3>
+            <p>Posts here</p>
+          </section>
+        </>
+
+      ) : (
+        <p>Loading...</p>
       )}
-      <button onClick={handleLogout} className={styles.signout}>
+      <button onClick={handleSignOut} className={styles.signout}>
         Sign out
         <AiOutlineLogout />
       </button>
-      {user && userPosts.length > 0 ? (
-        <ProfilePosts posts={userPosts} setPosts={setUserPosts} />
-      ) : (
-        <p> You have </p>
-      )}
       <Navbar />
     </>
   );
