@@ -1,3 +1,4 @@
+import styles from './page.module.css'
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signUp } from '../../lib/auth';
@@ -30,7 +31,7 @@ export default function SignUp() {
   };
 
   return (
-    <div>
+    <section className={styles.container}>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -71,6 +72,6 @@ export default function SignUp() {
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Sign Up</button>
       </form>
-    </div>
+    </section>
   );
 }
