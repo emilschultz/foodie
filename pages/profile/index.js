@@ -6,6 +6,7 @@ import { logOut } from '../../lib/auth';
 import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 const Profile = () => {
@@ -80,9 +81,21 @@ const Profile = () => {
             <button className={styles.followBtn}>Follow</button>
           </section>
 
-          <section>
-            <h3>Posts</h3>
-            <p>Posts here</p>
+          <section className={styles.grid}>
+            <Link href={'/'}>
+            {userData.posts.map((recipe) => (
+              <div key={recipe.postId ||  Math.random().toString(16).slice(2)} className={styles.post}>
+                {recipe.media &&
+                (recipe.media.type === 'image/jpg' ||
+                  recipe.media.type === 'image/jpeg' ||
+                  recipe.media.type === 'image/png' ||
+                  recipe.media.type === 'image/avif') && (
+                  <img src={recipe.media.url} className={styles.image} />
+                )}
+                {recipe.title}
+              </div>
+            ))}
+            </Link>
           </section>
         </>
 
