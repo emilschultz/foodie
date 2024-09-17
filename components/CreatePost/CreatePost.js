@@ -7,7 +7,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
-import { collection, addDoc, doc, getDoc } from 'firebase/firestore'; 
+import { collection, addDoc, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'; 
 import { db } from '../../lib/firebase'; 
 
 import styles from './CreatePost.module.css';
@@ -94,7 +94,10 @@ const CreatePost = ({ user }) => {
     try {
       // Save the post to Firestore
       const docRef = await addDoc(collection(db, 'recipes'), post);
-
+      const userRef = doc(db, "users", user.uid)
+      await updateDoc(userRef, {
+        posts: arrayUnion(post)
+      })
       console.log('Recipe created with ID:', docRef.id);
       reset();
       setInputDisabled(false);
