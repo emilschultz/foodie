@@ -45,8 +45,6 @@ const CreatePost = ({ user }) => {
 
     fetchUserDoc();
   }, [user, router]);
-  console.log("dokkeloks",userDoc);
-
 
   const [inputDisabled, setInputDisabled] = useState(false);
   const [tags, setTags] = useState([]);
