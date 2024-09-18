@@ -33,7 +33,6 @@ if (loading) return <p>Loading...</p>;
 
 const recipePost = 
   recipeDocs.map(recipe => {
-    console.log(recipe);
     const {id, media, title, user} = recipe;
     const {name, nickname, picture} = user || {};
     return (
