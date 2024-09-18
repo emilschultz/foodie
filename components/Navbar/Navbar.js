@@ -17,7 +17,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href='search'>
+          <Link href='discover'>
             <AiOutlineSearch />
           </Link>
         </li>
