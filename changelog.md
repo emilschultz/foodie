@@ -22,3 +22,16 @@ Firestore is great to work with!
 Had fun.
 
 **Link(s) to work**: https://github.com/emilschultz/foodie 
+__________________________________________________
+
+## Day 2: September 17, 2024
+
+**Today's Progress**: 
+- Started fetching and displaying data for the discover page. It fetches all recipes from the collection. This should be paginated later on.
+- Initial styling of the discover page
+
+**Thoughts**: 
+Making progress. Slow but steady.
+
+
+**Link(s) to work**: https://github.com/emilschultz/foodie 
