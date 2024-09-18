@@ -84,6 +84,7 @@ const Profile = () => {
           <section className={styles.grid}>
             <Link href={'/'}>
             {userData.posts.map((recipe) => (
+              // the Math.random is only while docs don't have a unique id. Refactor some day.
               <div key={recipe.postId ||  Math.random().toString(16).slice(2)} className={styles.post}>
                 {recipe.media &&
                 (recipe.media.type === 'image/jpg' ||

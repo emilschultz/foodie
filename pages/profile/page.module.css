@@ -71,6 +71,7 @@ color: whitesmoke;
   gap: 8px;
   border: none;
 }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(114px, 1fr));
