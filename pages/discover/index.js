@@ -1,7 +1,8 @@
 import { db } from '../../lib/firebase'
 import { useEffect, useState } from 'react';
-import Navbar from '../../components/Navbar/Navbar';
 import { collection, getDocs } from 'firebase/firestore';
+import Navbar from '../../components/Navbar/Navbar';
+import RecipeList from '../../components/RecipeList/RecipeList';
 import styles from './page.module.css'
 
 const Discover = () => {
@@ -31,33 +32,11 @@ const Discover = () => {
 
 if (loading) return <p>Loading...</p>;
 
-const recipePost = 
-  recipeDocs.map(recipe => {
-    const {id, media, title, user} = recipe;
-    const {name, nickname, picture} = user || {};
-    return (
-      <div key={id} className={styles.post}>
-        <div className={styles.header}>
-          {<img src={picture || 'https://via.placeholder.com/150'} className={styles.picture} />}
-          @{nickname || 'name'}
-        </div>
-        {media &&
-          (media.type === 'image/jpg' ||
-            media.type === 'image/jpeg' ||
-            media.type === 'image/png' ||
-            media.type === 'image/avif') && (
-            <img src={media.url} className={styles.image} />
-          )}
-        {title}
-      </div>
-    )
-  })
-
   return (
     <>
       <h1>Discover</h1>
       <section className={styles.grid}>
-      {recipePost}
+        <RecipeList recipes={recipeDocs} />
       </section>
       <Navbar />
     </>
