@@ -1,11 +1,19 @@
+import { useRouter } from 'next/router';
 import styles from './RecipePost.module.css'; 
 
 const RecipePost = ({ id, media, title, user }) => {
-  const { name, nickname, picture } = user || {};
+  const { name, nickname, uid, picture } = user || {};
+  const router = useRouter();
+
+  const handleProfileClick = () => {
+    if(uid) {
+        router.push(`/chef/${uid}`)
+    }
+  }
 
   return (
     <div key={id} className={styles.post}>
-      <div className={styles.header}>
+      <div className={styles.header} onClick={handleProfileClick}>
         <img
           src={picture || 'https://via.placeholder.com/150'}
           alt="User profile pitcure for"
