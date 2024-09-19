@@ -7,7 +7,7 @@ import ChefProfile from "../../components/ChefProfile/ChefProfile";
 
 const Chef = () => {
   const router = useRouter();
-  const {uid} = router.query;
+  const { uid } = router.query;
   const [chefData, setChefData] = useState(null)
 
   useEffect(() => {
@@ -36,8 +36,7 @@ const Chef = () => {
   }, [uid, router]);
 
 
-  const {nickname, profilePicture, followers, posts} = chefData || {}
-  console.log(nickname);
+  const {nickname, profilePicture, posts} = chefData || {}
   
   return (
     <>
