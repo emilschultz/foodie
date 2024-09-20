@@ -1,58 +1,49 @@
-import Navbar from '../../components/Navbar/Navbar.js';
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../lib/firebase";
+import Link from "next/link";
+import Navbar from "../../components/Navbar/Navbar";
 
-export default function RecipePage() {
-  const router = useRouter();
-  const [recipe, setRecipe] = useState('');
+const RecipeId = () => {
+const router = useRouter();
+const { id } = router.query;
+const [recipeData, setRecipeData] = useState(null);
 
-  const {
-    title,
-    body,
-    cookingtime,
-    difficulty,
-    ingredients,
-    likes,
-    media,
-    postedAt,
-    preptime,
-    servings,
-    steps,
-    tags,
-    tips,
-    user,
-    _id,
-  } = recipe;
-
-  useEffect(() => {
-    if (router.query.recipeId) {
-      (async () => {
-        try {
-          const getRecipe = await fetch(
-            `/api/recipe?postId=${router.query.recipeId}`
-          );
-          const getRecipeJson = await getRecipe.json();
-          console.log('Recipe Data', getRecipeJson);
-          setRecipe(getRecipeJson);
-        } catch (error) {
-          console.error('Error fetching recipe:', error);
+useEffect(() => {
+  const fetchRecipeData = async () => {
+    if(id) {
+      try {
+        if(!id) {
+          throw new Error('Recipe with this ID is not defined');
         }
-      })();
+
+        const recipeDocRef = doc(db, 'recipes', id);
+        const recipeDoc = await getDoc(recipeDocRef);
+
+        if(recipeDoc.exists()) {
+          setRecipeData(recipeDoc.data());
+        }
+      } catch (error) {
+        console.error('Error fetching recipe data:', error);
+      }
     }
-  }, [router.query.recipeId]);
-  // Make a function for related recipes.
-  // It should make a call to the api and filter on the tags.x
-  return (
-    <>
-      {recipe && (
+  };
+  fetchRecipeData();
+},[id, router]);
+
+const {body, cookingtime, difficulty, ingredients, likes, media, preptime, servings, steps, tags, tips, title, user } = recipeData || {}
+
+return (
+  <>
+      {recipeData !== null && (
         <>
           <article>
             <h1>{title}</h1>
             <div>
               <h5>By</h5>
               <Link href={'/'}>
-                <img src={user.picture} width={25} />
+                <img src={user.picture || ''} width={25} />
                 {user.nickname}
               </Link>
             </div>
@@ -106,5 +97,7 @@ export default function RecipePage() {
       )}
       <Navbar />
     </>
-  );
+)
 }
+
+export default RecipeId;
