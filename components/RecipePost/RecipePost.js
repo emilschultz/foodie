@@ -10,6 +10,14 @@ const RecipePost = ({ id, media, title, user }) => {
         router.push(`/chef/${uid}`)
     }
   }
+ 
+  const handleRecipeClick = () => {
+    if(id) {
+        router.push(`/recipe/${id}`)
+    }
+  }
+
+
 
   return (
     <div key={id} className={styles.post}>
@@ -21,6 +29,7 @@ const RecipePost = ({ id, media, title, user }) => {
         />
         @{nickname || name || 'name'}
       </div>
+      <div className={styles.content} onClick={handleRecipeClick}>
       {media &&
         (media.type === 'image/jpg' ||
           media.type === 'image/jpeg' ||
@@ -29,6 +38,7 @@ const RecipePost = ({ id, media, title, user }) => {
           <img src={media.url} alt="Recipe" className={styles.image} />
         )}
       {title}
+      </div>
     </div>
   );
 };
