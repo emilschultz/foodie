@@ -45,3 +45,15 @@ __________________________________________________
 Grinding. Sleepy but holding on.
 
 
+__________________________________________________
+
+## Day 4: September 17, 2024
+
+**Today's Progress**: 
+- Fixed the navbar - made the href attributes absolute
+- When you click on a post's content, you get sent the the recipe[id] page
+- Rendering the raw data of the recipe
+
+**Thoughts**: 
+Motivated
+
