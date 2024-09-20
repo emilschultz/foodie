@@ -17,12 +17,12 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href='discover'>
+          <Link href='/discover'>
             <AiOutlineSearch />
           </Link>
         </li>
         <li>
-          <Link href='createPost'>
+          <Link href='/createPost'>
             <AiOutlinePlus />
           </Link>
         </li>
