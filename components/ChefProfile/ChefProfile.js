@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import styles from './ChefProfile.module.css'; 
 
-export const ChefProfile = ({ posts, nickname, picture, id, followers }) => {
+export const ChefProfile = ({ posts, nickname, picture, followers }) => {
   
   
   return (
