@@ -77,8 +77,7 @@ const Profile = () => {
               </div>
 
             </div>
-            {/* Follow knappen skal egentlig ikke være her, men på chefProfile. Dette er jo ens egen profilside */}
-            <button className={styles.followBtn}>Follow</button>
+
           </section>
 
           <section className={styles.grid}>
