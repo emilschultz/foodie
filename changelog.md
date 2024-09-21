@@ -57,3 +57,14 @@ __________________________________________________
 **Thoughts**: 
 Motivated
 
+__________________________________________________
+
+## Day 5: September 17, 2024
+
+**Today's Progress**: 
+- Did some needed refactoring
+- Startet on a component for displaying userData in a Bio
+
+**Thoughts**: 
+
+
