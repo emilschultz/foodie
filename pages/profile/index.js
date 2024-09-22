@@ -6,8 +6,8 @@ import { logOut } from '../../lib/auth';
 import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import ProfileBio from '../../components/ProfileBio/ProfileBio';
 import Link from 'next/link';
+import ChefProfile from '../../components/ChefProfile/ChefProfile';
 import styles from './page.module.css';
 
 const Profile = () => {
@@ -50,30 +50,17 @@ const Profile = () => {
     }
   };
 
+  const {nickname, profilePicture, posts} = userData || {}
+
   return (
     <>
       {userData ? (
-        <>
-          <ProfileBio userData={userData} />
-          <section className={styles.grid}>
-            <Link href={'/'}>
-            {userData.posts.map((recipe) => (
-              // the Math.random is only while docs don't have a unique id. Refactor some day.
-              <div key={recipe.postId ||  Math.random().toString(16).slice(2)} className={styles.post}>
-                {recipe.media &&
-                (recipe.media.type === 'image/jpg' ||
-                  recipe.media.type === 'image/jpeg' ||
-                  recipe.media.type === 'image/png' ||
-                  recipe.media.type === 'image/avif') && (
-                  <img src={recipe.media.url} className={styles.image} />
-                )}
-                {recipe.title}
-              </div>
-            ))}
-            </Link>
-          </section>
-        </>
-
+          <ChefProfile  nickname={nickname}
+          profilePicture={profilePicture}
+          posts={posts} 
+          id={user.uid}
+          // followers={followers}
+          />
       ) : (
         <p>Loading...</p>
       )}
