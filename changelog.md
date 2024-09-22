@@ -67,4 +67,14 @@ __________________________________________________
 
 **Thoughts**: 
 
+__________________________________________________
+
+## Day 6: September 17, 2024
+
+**Today's Progress**: 
+- Refactoring
+- Follow and unfollow functionality
+
+**Thoughts**: 
+👍
 
