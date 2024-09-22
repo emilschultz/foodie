@@ -83,7 +83,7 @@ const CreatePost = ({ user }) => {
       steps: steps,
       tips: tips,
       likes: [],
-      postId: Math.random().toString(16).slice(2),
+      postId: '',
       user: {
         uid: user.uid,
         name: user.displayName || userDoc.firstname,
