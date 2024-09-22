@@ -96,8 +96,12 @@ const CreatePost = ({ user }) => {
       // Save the post to Firestore
       const docRef = await addDoc(collection(db, 'recipes'), post);
       const userRef = doc(db, "users", user.uid)
+      await updateDoc(docRef, {
+        postId: docRef.id
+      })
       await updateDoc(userRef, {
-        posts: arrayUnion(post)
+        posts: arrayUnion(post),
+        postId: docRef.id
       })
       console.log('Recipe created with ID:', docRef.id);
       reset();
