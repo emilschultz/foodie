@@ -4,7 +4,7 @@ import styles from './RecipePost.module.css';
 const RecipePost = ({ id, media, title, user }) => {
   const { name, nickname, uid, picture } = user || {};
   const router = useRouter();
-  const isDiscoverPage = router.pathname=== '/discover';
+  const isDiscoverPage = router.pathname === '/discover';
 
   const handleProfileClick = () => {
     if(uid) {
