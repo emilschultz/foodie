@@ -1,7 +1,11 @@
+import { useRouter } from 'next/router.js';
 import RecipeList from '../RecipeList/RecipeList.js'
 import styles from './ChefProfile.module.css'; 
 
 export const ChefProfile = ({ posts, nickname, picture, followers }) => {
+  const router = useRouter();
+  const isProfilePage = router.pathname === '/profile'
+
 
   return (
     <>
@@ -13,7 +17,8 @@ export const ChefProfile = ({ posts, nickname, picture, followers }) => {
           <p>Followers {followers ? followers.length : 0}</p>
           <p>Likes {}</p>
         </div>
-        <button className={styles.followBtn}>Follow</button>
+        
+        {!isProfilePage && <button className={styles.followBtn}>Follow</button>}
 
       </section>
       <section className={styles.grid}>
