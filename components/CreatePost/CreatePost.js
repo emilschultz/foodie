@@ -84,7 +84,7 @@ const CreatePost = ({ user }) => {
       tips: tips,
       likes: [],
       postId: '',
-      user: {
+      chef: {
         uid: user.uid,
         name: user.displayName || userDoc.firstname,
         nickname: userDoc.nickname || user.email,
