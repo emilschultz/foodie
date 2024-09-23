@@ -22,7 +22,7 @@ Had fun.
 
 __________________________________________________
 
-## Day 2: September 17, 2024
+## Day 2: September 18, 2024
 
 **Today's Progress**: 
 - Started fetching and displaying data for the discover page. It fetches all recipes from the collection. This should be paginated later on.
@@ -34,7 +34,7 @@ Making progress. Slow but steady.
 
 __________________________________________________
 
-## Day 3: September 17, 2024
+## Day 3: September 19, 2024
 
 **Today's Progress**: 
 - Refactor discover page and split code into components.
@@ -47,7 +47,7 @@ Grinding. Sleepy but holding on.
 
 __________________________________________________
 
-## Day 4: September 17, 2024
+## Day 4: September 20, 2024
 
 **Today's Progress**: 
 - Fixed the navbar - made the href attributes absolute
@@ -59,7 +59,7 @@ Motivated
 
 __________________________________________________
 
-## Day 5: September 17, 2024
+## Day 5: September 21, 2024
 
 **Today's Progress**: 
 - Did some needed refactoring
@@ -69,7 +69,7 @@ __________________________________________________
 
 __________________________________________________
 
-## Day 6: September 17, 2024
+## Day 6: September 22, 2024
 
 **Today's Progress**: 
 - Refactoring
@@ -77,4 +77,16 @@ __________________________________________________
 
 **Thoughts**: 
 👍
+__________________________________________________
+
+## Day 7: September 23, 2024
+
+**Today's Progress**: 
+- Display following and follwers count
+- Refactor
+- Began work on editing a recipe if you are the one who made it. But I need to rename 'user' in the recipe collection (user is the author of the recipe), to chef.
+This is because I need to compare user(chef) with the user from the authContext and they can not have the same name...
+
+**Thoughts**: 
+
 
