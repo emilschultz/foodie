@@ -50,7 +50,7 @@ const Profile = () => {
     }
   };
 
-  const {nickname, profilePicture, posts} = userData || {}
+  const {nickname, profilePicture, posts, followers, following} = userData || {}
 
   return (
     <>
@@ -59,7 +59,8 @@ const Profile = () => {
           profilePicture={profilePicture}
           posts={posts} 
           id={user.uid}
-          // followers={followers}
+          followers={followers}
+          following={following}
           />
       ) : (
         <p>Loading...</p>

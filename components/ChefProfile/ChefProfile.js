@@ -6,7 +6,7 @@ import { db } from '../../lib/firebase.js';
 import RecipeList from '../RecipeList/RecipeList.js';
 import styles from './ChefProfile.module.css';
 
-export const ChefProfile = ({ posts, nickname, picture, followers, id }) => {
+export const ChefProfile = ({ posts, nickname, picture, followers, id, following }) => {
   const router = useRouter();
   const isProfilePage = router.pathname === '/profile';
   const { user } = useAuth();
@@ -40,16 +40,23 @@ export const ChefProfile = ({ posts, nickname, picture, followers, id }) => {
   const handleFollowToggle = async () => {
     try {
       const loggedInUserRef = doc(db, 'users', user.uid);
+      const chefUserRef = doc(db, 'users', id)
 
       if (isFollowing) {
         await updateDoc(loggedInUserRef, {
           following: arrayRemove(id),
         });
+        await updateDoc(chefUserRef, {
+          followers: arrayRemove(user.uid),
+        })
         setIsFollowing(false);
       } else {
         await updateDoc(loggedInUserRef, {
           following: arrayUnion(id),
         });
+        await updateDoc(chefUserRef, {
+          followers: arrayUnion(user.uid)
+        })
         setIsFollowing(true);
       }
     } catch (error) {
@@ -68,8 +75,8 @@ export const ChefProfile = ({ posts, nickname, picture, followers, id }) => {
         />
         <p>@{nickname}</p>
         <div className={styles.stats}>
-          <p>Following {}</p>
-          <p>Followers {followers ? followers.length : 0}</p>
+          <p>Following {following?.length || 0}</p>
+          <p>Followers {followers?.length || 0}</p>
           <p>Likes {}</p>
         </div>
 

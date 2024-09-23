@@ -36,7 +36,7 @@ const Chef = () => {
   }, [uid, router]);
 
 
-  const {nickname, profilePicture, posts} = chefData || {}
+  const {nickname, profilePicture, posts, followers, following} = chefData || {}
   
   return (
     <>
@@ -46,7 +46,8 @@ const Chef = () => {
           profilePicture={profilePicture}
           posts={posts}
           id={uid}
-          // followers={followers}
+          followers={followers}
+          following={following}
         />
       )}
       <Navbar />
