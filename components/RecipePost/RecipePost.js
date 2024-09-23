@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import styles from './RecipePost.module.css'; 
 
-const RecipePost = ({ id, media, title, user }) => {
+const RecipePost = ({ postId, postedAt, id, media, title, user }) => {
   const { name, nickname, uid, picture } = user || {};
   const router = useRouter();
   const isDiscoverPage = router.pathname === '/discover';
@@ -19,7 +19,7 @@ const RecipePost = ({ id, media, title, user }) => {
   }
 
   return (
-    <div key={id} className={styles.post}>
+    <div key={postId || postedAt} className={styles.post}>
 
       {isDiscoverPage && <div className={styles.header} onClick={handleProfileClick}>
           <img
