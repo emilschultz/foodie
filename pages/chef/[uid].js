@@ -14,7 +14,6 @@ const Chef = () => {
     const fetchUserData = async () => {
       if (uid) {
         try {
-          // Ensure uid is valid
           if (!uid) {
             throw new Error('User UID is not defined');
           }

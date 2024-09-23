@@ -6,7 +6,6 @@ import { logOut } from '../../lib/auth';
 import { useAuth } from '../../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import Link from 'next/link';
 import ChefProfile from '../../components/ChefProfile/ChefProfile';
 import styles from './page.module.css';
 
@@ -19,7 +18,6 @@ const Profile = () => {
     const fetchUserData = async () => {
       if (user) {
         try {
-          // Ensure user.uid is valid
           if (!user.uid) {
             throw new Error('User UID is not defined');
           }
