@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import styles from './RecipePost.module.css'; 
 
 const RecipePost = ({ postId, postedAt, id, media, title, user }) => {
@@ -22,10 +23,12 @@ const RecipePost = ({ postId, postedAt, id, media, title, user }) => {
     <div key={postId || postedAt} className={styles.post}>
 
       {isDiscoverPage && <div className={styles.header} onClick={handleProfileClick}>
-          <img
+          <Image
             src={picture || 'https://via.placeholder.com/150'}
             alt="User profile pitcure for"
             className={styles.picture}
+            width={35}
+            height={35}
           />
           @{nickname || name || 'name'}
         </div>
@@ -36,8 +39,9 @@ const RecipePost = ({ postId, postedAt, id, media, title, user }) => {
           (media.type === 'image/jpg' ||
             media.type === 'image/jpeg' ||
             media.type === 'image/png' ||
-            media.type === 'image/avif') && (
-            <img src={media.url} alt="Recipe" className={styles.image} />
+            media.type === 'image/avif' ||
+            media.type === 'image/heic') && (
+            <Image src={media.url} alt="Recipe post" width={500} height={500} className={styles.image} />
           )}
         {title}
         </div>
