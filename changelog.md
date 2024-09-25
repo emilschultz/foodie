@@ -89,4 +89,15 @@ This is because I need to compare user(chef) with the user from the authContext 
 
 **Thoughts**: 
 
+__________________________________________________
+
+
+## Day 8: September 25, 2024
+
+**Today's Progress**: 
+- Added margin to bottom of grid, to ensure that you can scroll the last row into view (before this, it was hid behind the navbar)
+- Refactoring to use Next Image
+
+**Thoughts**: 
+They say its better...
 
