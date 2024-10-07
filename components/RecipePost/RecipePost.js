@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styles from './RecipePost.module.css'; 
 
-const RecipePost = ({ postId, postedAt, id, media, title, chef, user }) => { // this should only be "chef" in the future. Keeping it like this while testing. Alternatively, delete docs with a user object. User will be written as chef henceforth.
-  const { name, nickname, uid, picture } = chef || user || {};
+const RecipePost = ({ postId, postedAt, id, media, title, chef }) => { // this should only be "chef" in the future. Keeping it like this while testing. Alternatively, delete docs with a user object. User will be written as chef henceforth.
+  const { name, nickname, uid, picture } = chef || {};
   const router = useRouter();
   const isDiscoverPage = router.pathname === '/discover';
 
