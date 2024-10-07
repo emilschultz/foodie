@@ -20,7 +20,7 @@ const RecipePost = ({ postId, postedAt, id, media, title, chef, user }) => { // 
   }
 
   return (
-    <div key={postId || postedAt} className={styles.post}>
+    <div className={styles.post}>
 
       {isDiscoverPage && <div className={styles.header} onClick={handleProfileClick}>
           <Image
@@ -29,6 +29,7 @@ const RecipePost = ({ postId, postedAt, id, media, title, chef, user }) => { // 
             className={styles.picture}
             width={35}
             height={35}
+            priority={false}
           />
           @{nickname || name || 'name'}
         </div>
@@ -41,7 +42,7 @@ const RecipePost = ({ postId, postedAt, id, media, title, chef, user }) => { // 
             media.type === 'image/png' ||
             media.type === 'image/avif' ||
             media.type === 'image/heic') && (
-            <Image src={media.url} alt="Recipe post" width={500} height={500} className={styles.image} />
+            <Image src={media.url} alt="Recipe post" width={500} height={500} className={styles.image} priority={false} />
           )}
         {title}
         </div>

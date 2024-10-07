@@ -34,7 +34,7 @@ useEffect(() => {
   fetchRecipeData();
 },[id, router]);
 
-const {body, cookingtime, difficulty, ingredients, likes, media, preptime, servings, steps, tags, tips, title, chef } = recipeData || {}
+const {body, cookingtime, difficulty, ingredients, likes, media, preptime, servings, steps, tags, tips, title, chef, user } = recipeData || {}
 
 
 return (
@@ -46,8 +46,8 @@ return (
             <div>
               <h5>By</h5>
               <Link href={'/'}>
-                <img src={chef.picture || ''} width={25} />
-                {chef.nickname}
+                <img src={chef?.picture || user.picture} width={25} />
+                {chef?.nickname || user.nickname}
               </Link>
             </div>
             {tags && (
