@@ -2,11 +2,13 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
+// import { useAuth } from "../../context/AuthContext";
 import Link from "next/link";
 import Navbar from "../../components/Navbar/Navbar";
 
 const RecipeId = () => {
 const router = useRouter();
+// const { authUser } = useAuth(); // forgot what this was for..
 const { id } = router.query;
 const [recipeData, setRecipeData] = useState(null);
 
@@ -32,7 +34,8 @@ useEffect(() => {
   fetchRecipeData();
 },[id, router]);
 
-const {body, cookingtime, difficulty, ingredients, likes, media, preptime, servings, steps, tags, tips, title, user } = recipeData || {}
+const {body, cookingtime, difficulty, ingredients, likes, media, preptime, servings, steps, tags, tips, title, chef } = recipeData || {}
+
 
 return (
   <>
@@ -43,8 +46,8 @@ return (
             <div>
               <h5>By</h5>
               <Link href={'/'}>
-                <img src={user.picture || ''} width={25} />
-                {user.nickname}
+                <img src={chef.picture || ''} width={25} />
+                {chef.nickname}
               </Link>
             </div>
             {tags && (
