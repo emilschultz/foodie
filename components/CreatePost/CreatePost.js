@@ -101,7 +101,11 @@ const CreatePost = ({ user }) => {
       })
       await updateDoc(userRef, {
         posts: arrayUnion(post),
-        postId: docRef.id
+        post: {
+          ...post,
+          postId: docRef.id,
+
+        }
       })
       console.log('Recipe created with ID:', docRef.id);
       reset();
