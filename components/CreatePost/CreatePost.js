@@ -7,7 +7,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
-import { collection, addDoc, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'; 
+import { collection, doc, getDoc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore'; 
 import { db } from '../../lib/firebase'; 
 
 import styles from './CreatePost.module.css';
@@ -59,53 +59,46 @@ const CreatePost = ({ user }) => {
   const onSubmitPost = async (value) => {
     setInputDisabled(true);
 
-    // Create the post object with media URL if media was uploaded
-    const post = {
-      postedAt: Date.now(),
-      media: media
-        ? {
-            type: media.type,
-            lastModified: media.lastModified,
-            lastModifiedDate: media.lastModifiedDate,
-            name: media.name,
-            size: media.size,
-            url: mediaURL,
-          }
-        : null,
-      title: value.title,
-      body: value.post,
-      tags: tags,
-      servings: servings,
-      preptime: value.preptime,
-      cookingtime: value.cooktime,
-      difficulty: value.difficulty,
-      ingredients: ingredients,
-      steps: steps,
-      tips: tips,
-      likes: [],
-      postId: '',
-      chef: {
-        uid: user.uid,
-        name: user.displayName || userDoc.firstname,
-        nickname: userDoc.nickname || user.email,
-        picture: user.photoURL || 'https://via.placeholder.com/150',
-      },
-    };
-
+    
     try {
+      const docRef = doc(collection(db, 'recipes'));
+      const post = {
+        postedAt: Date.now(),
+        media: media
+          ? {
+              type: media.type,
+              lastModified: media.lastModified,
+              lastModifiedDate: media.lastModifiedDate,
+              name: media.name,
+              size: media.size,
+              url: mediaURL,
+            }
+          : null,
+        title: value.title,
+        body: value.post,
+        tags: tags,
+        servings: servings,
+        preptime: value.preptime,
+        cookingtime: value.cooktime,
+        difficulty: value.difficulty,
+        ingredients: ingredients,
+        steps: steps,
+        tips: tips,
+        likes: [],
+        postId: docRef.id,
+        chef: {
+          uid: user.uid,
+          name: user.displayName || userDoc.firstname,
+          nickname: userDoc.nickname || user.email,
+          picture: user.photoURL || 'https://via.placeholder.com/150',
+        },
+      };
+
       // Save the post to Firestore
-      const docRef = await addDoc(collection(db, 'recipes'), post);
+      await setDoc(docRef, post)
       const userRef = doc(db, "users", user.uid)
-      await updateDoc(docRef, {
-        postId: docRef.id
-      })
       await updateDoc(userRef, {
         posts: arrayUnion(post),
-        post: {
-          ...post,
-          postId: docRef.id,
-
-        }
       })
       console.log('Recipe created with ID:', docRef.id);
       reset();
