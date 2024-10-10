@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styles from './RecipePost.module.css'; 
 
-const RecipePost = ({ postId, postedAt, id, media, title, chef }) => { // this should only be "chef" in the future. Keeping it like this while testing. Alternatively, delete docs with a user object. User will be written as chef henceforth.
+const RecipePost = ({ postId, postedAt, media, title, chef }) => { 
   const { name, nickname, uid, picture } = chef || {};
   const router = useRouter();
   const isDiscoverPage = router.pathname === '/discover';
@@ -14,8 +14,10 @@ const RecipePost = ({ postId, postedAt, id, media, title, chef }) => { // this s
   }
  
   const handleRecipeClick = () => {
-    if(id) {
-        router.push(`/recipe/${id}`)
+    console.log("Recipe clicked, id: ", postId); 
+
+    if(postId) {
+        router.push(`/recipe/${postId}`)
     }
   }
 
@@ -33,17 +35,18 @@ const RecipePost = ({ postId, postedAt, id, media, title, chef }) => { // this s
           />
           @{nickname || name || 'name'}
         </div>
-        }
+      }
 
-        <div className={styles.content} onClick={handleRecipeClick}>
+      <div className={styles.content} onClick={handleRecipeClick}>
         {media &&
           (media.type === 'image/jpg' ||
             media.type === 'image/jpeg' ||
             media.type === 'image/png' ||
             media.type === 'image/avif' ||
             media.type === 'image/heic') && (
-            <Image src={media.url} alt="Recipe post" width={500} height={500} className={styles.image} priority={false} />
-          )}
+            <Image src={media ? media.url : 'https://via.placeholder.com/550'} alt="Recipe post" width={500} height={500} className={styles.image} priority={false} />
+          )
+        }
         {title}
         </div>
     </div>
