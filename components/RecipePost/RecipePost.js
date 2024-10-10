@@ -14,8 +14,6 @@ const RecipePost = ({ postId, postedAt, media, title, chef }) => {
   }
  
   const handleRecipeClick = () => {
-    console.log("Recipe clicked, id: ", postId); 
-
     if(postId) {
         router.push(`/recipe/${postId}`)
     }
@@ -44,9 +42,8 @@ const RecipePost = ({ postId, postedAt, media, title, chef }) => {
             media.type === 'image/png' ||
             media.type === 'image/avif' ||
             media.type === 'image/heic') && (
-            <Image src={media ? media.url : 'https://via.placeholder.com/550'} alt="Recipe post" width={500} height={500} className={styles.image} priority={false} />
-          )
-        }
+            <Image src={media.url} alt="Recipe post" width={500} height={500} className={styles.image} priority={false} />
+          )}
         {title}
         </div>
     </div>
