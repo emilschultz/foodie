@@ -1,8 +1,26 @@
+import { useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import styles from './Modal.module.css';
 
 const Modal = ({ show, onClose, children }) => {
-    if (!show) return null;
+
+useEffect(()=>{
+  const handleEscape = (e) => {
+    if(e.key === 'Escape') {
+      onClose()
+    }
+  }
+
+    if(show){
+      document.addEventListener('keydown', handleEscape);
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+    }
+},[onClose, show])
+
+if (!show) return null;
   
     return (
       <div className={styles.backdrop} onClick={onClose}>
