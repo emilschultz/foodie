@@ -77,6 +77,14 @@ const RecipeId = () => {
     }
   };
 
+  const handleRemoveItem = (indexToRemove, field) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: prev[field].filter((_, index) => index !== indexToRemove),
+    }));
+  };
+  
+
   return (
     <>
       {recipeData !== null && (
@@ -169,15 +177,18 @@ const RecipeId = () => {
             <input className={modalStyles.input} type="number" name="servings" value={servings} onChange={handleChange} />
           </div>
           <div>
-          <h3>Ingredients</h3>
+          <label>Ingredients</label>
           {ingredients && ingredients.length > 0 ? (
             ingredients.map((ingredient, index) => (
+              <>
               <input className={modalStyles.input}
                 key={index}
                 type="text"
                 value={ingredient}
                 onChange={(e) => handleArrayChange(index, e, "ingredients")}
               />
+              <button type="button" onClick={() => handleRemoveItem(index, "ingredients")}>x</button>
+              </>
             ))
           ) : (
             <p>No ingredients yet.</p>
