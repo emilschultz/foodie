@@ -6,6 +6,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../context/AuthContext";
 import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import Link from "next/link";
 import Navbar from "../../components/Navbar/Navbar";
 import Modal from "../../components/Modal/Modal";
@@ -159,6 +160,32 @@ const RecipeId = () => {
           <div className={modalStyles.div}>
             <label>Title</label>
             <input className={modalStyles.input} type="text" name="title" value={title} onChange={handleChange} />
+          </div>
+          <div className={modalStyles.div}>
+            <label>Description</label>
+            <input className={modalStyles.input} type="text" name="body" value={body} onChange={handleChange} />
+          </div>
+          <div className={modalStyles.div}>
+            <label>Tags</label>
+            {tags && tags.length > 0 ? (
+             tags.map((tag, index) => (
+               <div key={index} className={modalStyles.inputContainer}>
+               <input
+                className={modalStyles.input}
+                type="text"
+                value={tag}
+                onChange={(e) => handleArrayChange(index, e, "tags")}
+                />
+                <button type="button" onClick={() => handleRemoveItem(index, "tags")}><AiOutlineDelete />
+                </button>
+                </div>
+             ))
+            ) : <p>No tags yet</p>
+            }
+            <button type="button" onClick={() => setFormData((prev) =>({
+              ...prev,
+              tags: [...(prev.tags || []), '']
+            }))}>Add tag</button>
           </div>
           <div>
             <label>Prep Time</label>
