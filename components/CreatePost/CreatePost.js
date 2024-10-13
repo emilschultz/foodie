@@ -14,6 +14,7 @@ import styles from './CreatePost.module.css';
 
 const CreatePost = ({ user }) => {
   const [userDoc, setUserDoc] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter();
 
@@ -124,7 +125,8 @@ const CreatePost = ({ user }) => {
         'state_changed',
         (snapshot) => {
           const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            setLoading(progress)
           console.log('Upload is ' + progress + '% done');
         },
         (error) => {
@@ -215,6 +217,12 @@ const CreatePost = ({ user }) => {
         accept="media/*"
         onChange={handleFileChange}
       />
+      
+      {loading > 0 && (
+        <div>
+          <progress className={styles.progress} value={loading} max="100"></progress> 
+        </div>
+      )}
 
       {/* TITLE */}
       <label htmlFor="title">Title</label>
