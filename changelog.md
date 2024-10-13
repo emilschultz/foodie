@@ -104,7 +104,7 @@ They say its better...
 __________________________________________________
 
 
-## Day 9: Oktober 25, 2024
+## Day 9: Oktober 11, 2024
 
 **Today's Progress**: 
 - Worked on the editing functionality of a recipe. On a button click, a modal opens, and the user can edit his/hers recipe.
@@ -113,6 +113,18 @@ __________________________________________________
 **Thoughts**: 
 Fall vacation
 Forgot to log for a week or so, after vacation.
+
+
+__________________________________________________
+
+
+## Day 9: Oktober 13, 2024
+
+**Today's Progress**: 
+- Feeling tired and having difficult to focus. So I just made a simple progress bar for fun.  
+
+**Thoughts**: 
+- 
 
 
 

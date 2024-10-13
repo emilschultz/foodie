@@ -135,7 +135,7 @@ const RecipeId = () => {
                     <li key={step}>{step}</li>
                   ))}
                 </ol>
-              </>
+              </> 
             )}
             {tips && (
               <>
