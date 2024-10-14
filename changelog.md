@@ -118,10 +118,21 @@ Forgot to log for a week or so, after vacation.
 __________________________________________________
 
 
-## Day 9: Oktober 13, 2024
+## Day 10: Oktober 13, 2024
 
 **Today's Progress**: 
 - Feeling tired and having difficult to focus. So I just made a simple progress bar for fun.  
+
+**Thoughts**: 
+- 
+__________________________________________________
+
+
+## Day 11: Oktober 13, 2024
+
+**Today's Progress**: 
+- Fixed buttons styling on the modal component
+- Working on input validation for the modal form
 
 **Thoughts**: 
 - 

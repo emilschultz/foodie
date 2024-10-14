@@ -48,6 +48,7 @@
   }
 
   .inputContainer {
+    width: 50%;
     display: flex;
     gap: 10px;
   }
