@@ -176,8 +176,8 @@ const RecipeId = () => {
                 value={tag}
                 onChange={(e) => handleArrayChange(index, e, "tags")}
                 />
-                <button type="button" onClick={() => handleRemoveItem(index, "tags")}><AiOutlineDelete />
-                </button>
+                <div type="button" onClick={() => handleRemoveItem(index, "tags")}><AiOutlineDelete />
+                </div>
                 </div>
              ))
             ) : <p>No tags yet</p>

@@ -25,8 +25,8 @@ if (!show) return null;
     return (
       <div className={styles.backdrop} onClick={onClose}>
         <div className={styles.content} onClick={(e) => e.stopPropagation()}>
-          <button className={styles.close} onClick={onClose}><AiOutlineCloseCircle />
-          </button>
+          <div className={styles.close} onClick={onClose}><AiOutlineCloseCircle />
+          </div>
           {children}
         </div>
       </div>
