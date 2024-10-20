@@ -58,11 +58,12 @@ const RecipeId = () => {
     }));
   };
 
-  const handleArrayChange = (index, e, field) => {
+  const handleArrayChange = (index, e, arrayField) => {
     const { value } = e.target;
+    if (value.trim() === "") return;
     setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].map((item, i) => (i === index ? value : item)),
+      [arrayField]: prev[arrayField].map((item, i) => (i === index ? value : item)),
     }));
   };
 
@@ -173,7 +174,8 @@ const RecipeId = () => {
                <input
                 className={modalStyles.input}
                 type="text"
-                value={tag}
+                value={tag || ""}
+                placeholder="Enter a tag"
                 onChange={(e) => handleArrayChange(index, e, "tags")}
                 />
                 <div type="button" onClick={() => handleRemoveItem(index, "tags")}><AiOutlineDelete />
