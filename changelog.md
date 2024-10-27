@@ -125,6 +125,7 @@ __________________________________________________
 
 **Thoughts**: 
 - 
+
 __________________________________________________
 
 
@@ -136,6 +137,17 @@ __________________________________________________
 
 **Thoughts**: 
 - 
+
+__________________________________________________
+
+
+## Day 12: Oktober 27, 2024
+
+**Today's Progress**: 
+- Worked on progress bar and added animation. It no longer jumps as it it rogresses, but now grows smoothly as the file uploads. 
+
+**Thoughts**: 
+- Not much time for deep work.
 
 
 
