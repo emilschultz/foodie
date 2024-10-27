@@ -1,0 +1,24 @@
+/* styles/globals.css */
+::-webkit-progress-bar {
+    background-color: white;
+  }
+  
+  .animated-progress::-webkit-progress-value {
+    transition: width 2s;
+    background-color: rgb(26, 210, 75);
+  }
+
+  /* For Firefox (most likely) */
+  /* .animated-progress::-moz-progress-bar {
+    transition: padding-bottom 1s;
+    padding-left: 60px;
+    padding-bottom: var(--value);
+    background-color: blue;
+    height: 0;
+    transform-origin: 0 0;
+    transform: rotate(-90deg) translateX(-60px) ;
+  }
+  .animated-progress::-ms-fill {
+    background-color: blue;
+    border: 0;
+  } */

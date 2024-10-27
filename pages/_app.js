@@ -1,4 +1,5 @@
 'use client';
+import '@/styles/global.css';
 import Head from 'next/head';
 import { AuthProvider } from '../context/AuthContext.js'
 import styles from './page.module.css';
