@@ -220,7 +220,7 @@ const CreatePost = ({ user }) => {
       
       {loading > 0 && (
         <div>
-          <progress className={styles.progress} value={loading} max="100"></progress> 
+          <progress className={`${styles.progress} animated-progress`} value={loading} max="100"></progress> 
         </div>
       )}
 
