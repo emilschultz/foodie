@@ -75,6 +75,11 @@
 
 .progress {
 width: 100%;
+border: 0; /* For IE */
+background-color: white;
+border: 1px solid rgb(26, 210, 75);
+border-radius: 8pt;
+overflow: hidden;
+margin: 8px 0;
 
-transition: ease-in-out;
 }
